@@ -1,0 +1,2111 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Latihan PHP Bersama Apeli</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: buku tulis kotak-kotak. Sidebar modul di kiri, satu modul per layar di kanan. */
+:root{
+  --bg:#eef2f7; --grid:rgba(60,90,140,.11); --surface:#ffffff; --surface2:#f4f7fb;
+  --ink:#1c2433; --soft:#4b5870; --line:#d3dcea;
+  --apple:#e0392d; --apple-deep:#b8271f; --on-apple:#ffffff;
+  --leaf:#2f8f46; --leaf-soft:#e0f3e4; --bad:#c4302b; --bad-soft:#fde8e6;
+  --hint:#fff3d2; --hint-ink:#6a4a00;
+  --code-bg:#172033; --code-fg:#e8eefc; --code-line:#2b3956;
+  --c-com:#8793b2; --c-str:#a6e07a; --c-var:#ffb86b; --c-kw:#ff8a98; --c-num:#7fd4ff; --c-tag:#7fd4ff;
+  --mline:#3b1820; --amber-ink:#b97a00;
+  --f-display:"Baloo 2","Trebuchet MS",sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",Tahoma,sans-serif;
+  --f-mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1520; --grid:rgba(140,170,220,.07); --surface:#172030; --surface2:#1c273a;
+    --ink:#e7edf8; --soft:#a3b0c7; --line:#2a3850;
+    --apple:#ef5a4d; --apple-deep:#ff8a7e; --on-apple:#2a0b08;
+    --leaf:#5bbf68; --leaf-soft:#163122; --bad:#ff8277; --bad-soft:#3a1b1a;
+    --hint:#3a2f12; --hint-ink:#ffd37a;
+    --code-bg:#0b101a; --code-line:#26334b; --amber-ink:#ffc14d;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1520; --grid:rgba(140,170,220,.07); --surface:#172030; --surface2:#1c273a;
+  --ink:#e7edf8; --soft:#a3b0c7; --line:#2a3850;
+  --apple:#ef5a4d; --apple-deep:#ff8a7e; --on-apple:#2a0b08;
+  --leaf:#5bbf68; --leaf-soft:#163122; --bad:#ff8277; --bad-soft:#3a1b1a;
+  --hint:#3a2f12; --hint-ink:#ffd37a;
+  --code-bg:#0b101a; --code-line:#26334b; --amber-ink:#ffc14d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background-color:var(--bg); color:var(--ink);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+  font-family:var(--f-body); font-size:16px; line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:20px 40px;
+}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0 0 .8em}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+:not(pre)>code{background:var(--surface2);border:1px solid var(--line);border-radius:5px;padding:.05em .38em}
+a{color:var(--apple-deep)}
+:focus-visible{outline:3px solid var(--apple);outline-offset:2px;border-radius:6px}
+
+/* Top bar */
+.top{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:18px}
+.top .brand{display:flex;gap:12px;align-items:center;min-width:0;flex:1 1 280px}
+.top h1{font-size:1.55rem;font-weight:800}
+.top .sub{color:var(--soft);font-size:.9rem;margin:0}
+.meter{flex:0 1 280px;min-width:200px}
+.meter .row{display:flex;justify-content:space-between;font-size:.86rem;color:var(--soft);margin-bottom:4px}
+.meter .row b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:10px;border-radius:99px;background:var(--surface2);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--leaf);border-radius:99px;transition:width .4s}
+
+/* Shell */
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px;align-items:start}
+nav.mods{position:sticky;top:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;max-height:calc(100vh - 24px);overflow:auto}
+nav.mods h2{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-family:var(--f-body);font-weight:700;margin:4px 8px 8px}
+nav.mods a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);padding:7px 8px;border-radius:9px;font-size:.93rem}
+nav.mods a:hover{background:var(--surface2)}
+nav.mods a[aria-current="page"]{background:var(--apple);color:var(--on-apple);font-weight:700}
+nav.mods .no{font-family:var(--f-mono);font-size:.76rem;min-width:2.2em;text-align:center;border:1px solid currentColor;border-radius:6px;padding:0 4px;opacity:.85}
+nav.mods .ct{margin-left:auto;font-size:.78rem;font-variant-numeric:tabular-nums;opacity:.85}
+nav.mods a.done .ct::before{content:"✓ "}
+
+/* Module */
+main{min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px}
+.mhead{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.mhead .txt{flex:1 1 320px;min-width:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--apple-deep);margin:0 0 4px}
+.mhead h2{font-size:2rem;font-weight:800}
+.bubble{position:relative;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:12px;font-size:.98rem}
+.sec{font-size:1.25rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.sec small{font-family:var(--f-body);font-weight:400;color:var(--soft);font-size:.85rem}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:0 0 16px;padding:0;list-style:none}
+.points li{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.points li b{display:block;font-family:var(--f-mono);font-size:.84rem;color:var(--apple-deep);margin-bottom:2px;overflow-wrap:anywhere}
+
+/* Code */
+.code{border:1px solid var(--code-line);border-radius:10px;background:var(--code-bg);margin:12px 0;overflow:hidden}
+.code .bar2{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--code-line);color:#9fb0d4;font-family:var(--f-mono);font-size:.76rem}
+.code .bar2 b{color:#8fd3ff;font-weight:600}
+.code button{font:inherit;color:#cfe0ff;background:transparent;border:1px solid var(--code-line);border-radius:6px;padding:1px 8px;cursor:pointer}
+.code button:hover{background:#22304d}
+.code pre{margin:0;padding:12px 14px;overflow-x:auto;color:var(--code-fg);font-family:var(--f-mono);font-size:.86rem;line-height:1.55;tab-size:4}
+.t-com{color:var(--c-com);font-style:italic}.t-str{color:var(--c-str)}.t-var{color:var(--c-var)}.t-kw{color:var(--c-kw)}.t-num{color:var(--c-num)}.t-tag{color:var(--c-tag)}
+.blank{background:rgba(255,200,80,.25);border-bottom:2px dashed #ffc14d;color:#ffd98a;padding:0 .35em;border-radius:3px}
+
+/* Questions */
+.q{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;background:var(--surface)}
+.q.ok{border-color:var(--leaf);background:var(--leaf-soft)}
+.q .qh{display:flex;gap:10px;align-items:flex-start}
+.q .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--bg);font-family:var(--f-display);font-weight:800;display:grid;place-items:center;font-size:.9rem}
+.q.ok .n{background:var(--leaf);color:#fff}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);border:1px solid var(--line);border-radius:99px;padding:0 8px;margin-bottom:3px}
+.qt{margin:0}
+.opts{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.opts button{width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.opts button:hover:not(:disabled){border-color:var(--apple)}
+.opts .k{flex:none;font-family:var(--f-mono);font-size:.8rem;border:1px solid var(--line);border-radius:6px;padding:0 6px;color:var(--soft)}
+.opts .tx{min-width:0;overflow-wrap:anywhere}
+.opts button.right{border-color:var(--leaf);background:var(--leaf-soft)}
+.opts button.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opts button:disabled{cursor:default}
+.fillrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.fillrow input{flex:1 1 200px;min-width:0;font-family:var(--f-mono);font-size:.95rem;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:8px 16px;cursor:pointer;background:var(--apple);color:var(--on-apple)}
+.btn:hover{background:var(--apple-deep);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost:hover{background:var(--surface2);color:var(--ink)}
+.fb{display:none;gap:10px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-radius:10px;font-size:.95rem;background:var(--surface2);border:1px solid var(--line)}
+.fb.show{display:flex}
+.fb.good{background:var(--leaf-soft);border-color:var(--leaf)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb .m{flex:none}.fb .t{min-width:0}
+.fb .acts{margin-top:6px;display:flex;gap:8px;flex-wrap:wrap}
+
+/* Task */
+.task h3{font-size:1.2rem}
+details{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:var(--surface2)}
+details>summary{cursor:pointer;padding:9px 12px;font-weight:700;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";color:var(--apple-deep)}
+details[open]>summary::before{content:"▾ "}
+details .in{padding:0 12px 10px}
+.hintbox{background:var(--hint);color:var(--hint-ink);border-radius:8px;padding:8px 12px;margin:0}
+.donerow{display:flex;gap:10px;align-items:center;margin-top:10px;font-weight:700}
+.donerow input{width:20px;height:20px;accent-color:var(--leaf)}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.meter .row.sm{margin:6px 0 0;font-size:.78rem}
+.chip{display:inline-block;background:var(--hint);color:var(--hint-ink);border-radius:99px;padding:0 8px;font-weight:700;font-size:.76rem}
+.btn.sm{padding:5px 12px;font-size:.85rem}
+a.btn{display:inline-block;text-decoration:none}
+nav.mods .ico{display:inline-grid;place-items:center;min-width:2.2em}
+.hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.hero .txt{flex:1 1 340px;min-width:0}
+.hero h2{font-size:2rem;font-weight:800}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.garden{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:10px}
+.garden a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--ink);padding:6px 2px;border-radius:10px;font-size:.76rem}
+.garden a:hover{background:var(--surface2)}
+.garden b{font-family:var(--f-mono);font-weight:600}
+.phase{margin:18px 0 8px;font-family:var(--f-display);font-weight:800;font-size:1.05rem}
+.phase small{font-family:var(--f-body);font-weight:400;color:var(--soft);font-size:.85rem;margin-left:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.mc{display:block;text-decoration:none;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.mc:hover{border-color:var(--apple)}
+.mc .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.mc h3{font-size:1.1rem}
+.mc .rm{font-family:var(--f-mono);font-size:.74rem;color:var(--apple-deep)}
+.mc p{font-size:.88rem;color:var(--soft);margin:4px 0 8px}
+.mc .bar{height:7px}
+.mc.full{border-color:var(--leaf);background:var(--leaf-soft)}
+#toast{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none;z-index:50}
+#toast .tb{pointer-events:auto;display:flex;gap:12px;align-items:center;max-width:460px;background:var(--surface);color:var(--ink);border:2px solid var(--leaf);border-radius:14px;padding:10px 14px;box-shadow:0 8px 30px rgba(0,0,0,.25);animation:tin .35s ease-out}
+@keyframes tin{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+#fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:40}
+#fx i{position:absolute;top:-24px;width:14px;height:14px;border-radius:50% 50% 45% 45%;background:var(--apple);animation:fall 2.2s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(300deg)}}
+@media (prefers-reduced-motion:reduce){#toast .tb{animation:none}#fx{display:none}}
+.xhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.xhead b{font-family:var(--f-display);font-size:1.15rem}
+.timer{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--soft)}
+.navg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.navg button{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer;padding:0}
+.navg button.ans{background:var(--leaf-soft);border-color:var(--leaf)}
+.navg button.cur{outline:3px solid var(--apple);outline-offset:1px}
+.opts button.sel{border-color:var(--apple);background:var(--surface2)}
+.xnav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px}
+.score{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.score .big{font-family:var(--f-display);font-weight:800;font-size:3.4rem;line-height:1}
+.score .big small{font-size:1.2rem;color:var(--soft);font-weight:600}
+.brk{display:grid;gap:6px;margin:12px 0}
+.brk a{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 40px;gap:10px;align-items:center;color:var(--ink);text-decoration:none;font-size:.9rem}
+.brk a:hover b{text-decoration:underline}
+.brk b{font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brk .bar{height:9px}
+.brk .bar i.low{background:var(--bad)}
+.q.bad{border-color:var(--bad);background:var(--bad-soft)}
+.q.bad .n{background:var(--bad);color:#fff}
+.chips{display:flex;gap:8px;margin:0 0 12px;flex-wrap:wrap}
+.chips button{font:inherit;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:3px 14px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ans-line{margin:8px 0 0;font-size:.95rem}
+.again{display:flex;justify-content:center;margin:0 0 14px}
+footer{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:var(--soft);font-size:.85rem;margin-top:6px}
+
+@media (max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  nav.mods{position:static;max-height:none;padding:8px}
+  nav.mods h2{display:none}
+  nav.mods .list{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+  nav.mods a{flex:none;white-space:nowrap;border:1px solid var(--line)}
+  .mhead h2{font-size:1.6rem}
+  .panel{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="logo-wrap"><button type="button" id="evil" tabindex="-1" aria-hidden="true" aria-label="Pintu neraka: tantangan 5 soal bahasa pemrograman esoterik"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M5 11 3 2 10 7zM21 11 23 2 16 7z" fill="#ff5a3c"/><circle cx="13" cy="15" r="9" fill="#b8271f"/><path d="M8 13l4 2M18 13l-4 2" stroke="#ffd84a" stroke-width="2" stroke-linecap="round"/><path d="M9 20q4-3 8 0" stroke="#ffd84a" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button><span id="logo" role="button" tabindex="0" aria-label="Apeli, maskot apel. Klik tiga kali kalau berani."></span></span>
+      <div>
+        <h1>Latihan Pemrograman Web I</h1>
+        <p class="sub">13 modul PHP dari HTML sampai OOP. Latihan bersama Apeli, disusun dari Modul Praktikum RPL.</p>
+      </div>
+    </div>
+    <div class="meter" aria-live="polite">
+      <div class="row"><span id="lvname">Biji Apel</span><b id="pcount">0 / 0</b></div>
+      <div class="bar"><i id="pbar"></i></div>
+      <div class="row sm"><span id="xpinfo"></span><span id="streak"></span></div>
+    </div>
+    <button class="btn ghost sm" id="theme" type="button">Mode gelap</button>
+  </header>
+  <div class="shell">
+    <nav class="mods" aria-label="Daftar modul"><h2>Modul</h2><div class="list" id="navlist"></div></nav>
+    <main id="main" tabindex="-1"></main>
+  </div>
+  <footer>
+    <span id="sync">Progres tersimpan di browser ini.</span>
+    <button class="btn ghost" id="reset" type="button">Reset progres</button>
+  </footer>
+</div>
+<div id="toast" aria-live="polite"></div>
+<div id="fx" aria-hidden="true"></div>
+<script>
+const MODS=[];
+</script>
+<script>
+MODS.push({n:1,rom:'I',pert:'1',title:'HTML',
+intro:'Halo! HTML itu kerangka rumah. Tanpa kerangka, CSS dan PHP nggak punya tempat menempel.',
+points:[
+['<html> <head> <body>','Tiga tag utama. head berisi info dokumen (misalnya title), body berisi apa yang tampil di browser.'],
+['tag buka dan tutup','Hampir semua tag harus ditutup: <p>...</p>. Tag tunggal seperti <br>, <hr>, <img> tidak perlu penutup.'],
+['<h1> sampai <h6>, <p>','Heading untuk judul dan sub judul, paragraf untuk teks biasa.'],
+['<a href> dan <img src>','Link butuh atribut href. Gambar butuh atribut src.'],
+['<ul> <ol> <li>','ul untuk daftar bertitik, ol untuk daftar bernomor, li untuk tiap itemnya.'],
+['<table> <tr> <th> <td>','table membungkus tabel, tr satu baris, th judul kolom, td isi sel.'],
+['<div id="...">','Pembagi area halaman: header, content, sidebar, footer.']
+],
+code:{fn:'prak1.html',lang:'html',src:`<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Belajar Membuat Heading dan Paragraph</title>
+</head>
+<body>
+    <h1>Heading ke-1</h1>
+    <h2>Heading ke-2</h2>
+    <p><strong>ini adalah contoh paragraph</strong></p>
+</body>
+</html>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Tag mana yang menampilkan teks pada tab browser?',o:['<title>','<body>','<h1>','<p>'],why:'<title> ada di dalam <head>. Isinya muncul di tab browser, bukan di halaman.'},
+{k:'pilihan',t:'mcq',q:'Daftar yang itemnya bernomor 1, 2, 3 dibuat dengan tag...',o:['<ol>','<ul>','<li>','<table>'],why:'ol = ordered list (berurutan). ul = unordered list (bertitik). li dipakai di dalam keduanya.'},
+{k:'bug',t:'mcq',q:'Agar tulisan ini bisa diklik dan membuka beranda.html, atribut apa yang kurang?',code:'<a>Beranda</a>',lang:'html',o:['href="beranda.html"','src="beranda.html"','link="beranda.html"','name="beranda.html"'],why:'Tag <a> memakai atribut href untuk tujuan link. Atribut src dipakai <img>.'},
+{k:'pilihan',t:'mcq',q:'Tag yang membuat satu baris pada tabel adalah...',o:['<tr>','<td>','<th>','<tb>'],why:'tr = table row. td dan th adalah sel di dalam baris itu.'},
+{k:'lengkapi',t:'fill',q:'Lengkapi atribut agar gambar kipasangin.jpg tampil.',lang:'html',code:'<img ___="kipasangin.jpg" width="145" height="150">',ans:['src'],why:'src (source) menunjuk ke file gambar.'},
+{k:'pilihan',t:'mcq',q:'Tag mana yang TIDAK perlu tag penutup?',o:['<br>','<p>','<h1>','<table>'],why:'<br> (baris baru) berdiri sendiri. Paragraf, heading, dan tabel harus ditutup.'}
+],
+task:{title:'Tampilan Foodcourt',
+brief:'Buat halaman Foodcourt: header berisi nama foodcourt dan gambar, konten berupa tabel menu (nama, harga, gambar), satu link menuju Foodcourt, dan footer berisi copyright dengan namamu.',
+hint:'Bagi halaman dengan tiga div: id="header", id="konten", id="footer". Tabel butuh baris judul (th) dan minimal tiga baris menu (td).',
+fn:'foodcourt.html',lang:'html',
+sol:`<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodcourt</title>
+</head>
+<body>
+    <div id="header">
+        <h1>Foodcourt Sekolah</h1>
+        <img src="logo.jpg" width="80" height="80">
+    </div>
+
+    <div id="konten">
+        <table border="1" cellpadding="8">
+            <caption>Daftar Menu</caption>
+            <tr><th>Menu</th><th>Harga</th><th>Gambar</th></tr>
+            <tr><td>Nasi Goreng</td><td>12.000</td><td><img src="nasigoreng.jpg" width="100"></td></tr>
+            <tr><td>Mie Ayam</td><td>10.000</td><td><img src="mieayam.jpg" width="100"></td></tr>
+            <tr><td>Es Teh</td><td>4.000</td><td><img src="esteh.jpg" width="100"></td></tr>
+        </table>
+        <p><a href="foodcourt.html">Kunjungi Foodcourt</a></p>
+    </div>
+
+    <div id="footer">Copyright &copy; 2026 Nama Kamu</div>
+</body>
+</html>`,
+note:'Nama file gambar boleh kamu ganti. Simpan semuanya di satu folder supaya gambar terbaca.'}
+});
+
+MODS.push({n:2,rom:'II',pert:'2',title:'CSS',
+intro:'CSS itu cat dan dekorasinya. Kerangka dari HTML, tampilannya dari aku.',
+points:[
+['selector { property: value; }','Selector memilih elemen, property adalah sifatnya, value adalah nilainya. Tiap baris diakhiri titik koma.'],
+['h1  #header  .artikel','Tag langsung ditulis namanya, id diawali #, class diawali titik.'],
+['.artikel h1','Hanya h1 yang berada di dalam elemen ber-class artikel.'],
+['h1, p, a','Koma menggabungkan beberapa selector agar satu aturan berlaku untuk semuanya.'],
+['inline, internal, eksternal','Inline: atribut style. Internal: tag <style> di head. Eksternal: file .css lewat <link rel="stylesheet">.'],
+['margin dan padding','margin = jarak di luar elemen. padding = jarak antara isi dan tepi elemen.'],
+['border','Butuh tiga hal: color, style, width. Contoh: border: 5px solid black;'],
+['position','static (default), relative (bergeser dari posisi asal), absolute (relatif ke parent), fixed.']
+],
+code:{fn:'style.css',lang:'css',src:`.box {
+    background-color: green;
+    color: yellow;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 50px;   /* jarak ke box berikutnya */
+}
+
+#box {
+    position: relative;
+    top: 100px;
+    left: 200px;
+}`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Selector untuk elemen yang punya id="header" adalah...',o:['#header','.header','header#','*header'],why:'id memakai tanda pagar (#). Class memakai titik (.).'},
+{k:'pilihan',t:'mcq',q:'File CSS terpisah yang dipanggil dengan <link rel="stylesheet" href="style.css"> disebut CSS...',o:['eksternal','inline','internal','embedded'],why:'Eksternal artinya ditulis di file lain, lalu dipanggil dari head.'},
+{k:'pilihan',t:'mcq',q:'Jarak antara isi elemen dan garis tepinya diatur oleh...',o:['padding','margin','spacing','border-gap'],why:'padding di dalam border. margin di luar border.'},
+{k:'output',t:'mcq',q:'Aturan ini berlaku untuk elemen mana?',code:'.artikel h1 {\n    color: red;\n}',lang:'css',o:['Hanya h1 yang berada di dalam elemen ber-class artikel','Semua h1 di seluruh halaman','Elemen ber-class artikel saja','h1 yang punya class artikel'],why:'Dua selector dipisah spasi artinya turunan: h1 yang ada di dalam .artikel.'},
+{k:'output',t:'mcq',q:'#box tidak punya properti position. Apa efek top: 100px dan left: 200px?',code:'#box {\n    width: 300px;\n    height: 300px;\n    top: 100px;\n    left: 200px;\n}',lang:'css',o:['Tidak ada efek, karena position default-nya static','Kotak bergeser 100px ke bawah dan 200px ke kanan','Kotak hilang dari halaman','Kotak menempel di pojok kanan bawah layar'],why:'top, left, right, bottom baru bekerja kalau position bukan static. Tambahkan position: relative.'},
+{k:'lengkapi',t:'fill',q:'Isi nilai position agar kotak bergeser dari posisi aslinya.',lang:'css',code:'#box {\n    position: ___;\n    top: 100px;\n    left: 200px;\n}',ans:['relative'],why:'relative menggeser elemen dari tempat normalnya.'}
+],
+task:{title:'Percantik Foodcourt',
+brief:'Pakai CSS eksternal untuk memperindah halaman Foodcourt dari Modul I. Lebar halaman 1000px dan di tengah, header dan footer berwarna, tabel punya border dan padding.',
+hint:'Panggil style.css di head. Untuk menengahkan: width: 1000px; margin: auto;. Tabel: border-collapse: collapse.',
+fn:'style.css',lang:'css',
+sol:`html, body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+
+#box { width: 1000px; margin: auto; }
+
+#header { background-color: #dfd5d5; padding: 20px; text-align: center; }
+
+#konten { padding: 20px; }
+
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #999; padding: 10px; text-align: left; }
+th { background-color: #e4e4e4; }
+
+#footer { background-color: #999494; padding: 20px; text-align: center; color: white; }`,
+note:'Bungkus seluruh isi body dengan <div id="box"> supaya aturan lebar 1000px berlaku.'}
+});
+</script>
+<script>
+MODS.push({n:3,rom:'III',pert:'4',title:'Struktur Dasar PHP',
+intro:'PHP jalan di server, jadi browser cuma menerima hasilnya. Mulai dari variabel, yuk.',
+points:[
+['<?php ... ?>','Semua kode PHP ditulis di dalam blok ini. File harus berekstensi .php dan dijalankan lewat localhost.'],
+['$variabel','Diawali tanda dolar. Tipe datanya ditentukan PHP otomatis dari isinya.'],
+['tipe data','string, integer, float (desimal), array, dan object.'],
+['define("NAMA", nilai)','Konstanta: nilainya tidak bisa berubah, dan namanya tanpa tanda $.'],
+['+  -  *  /  %','Aritmatika. % menghasilkan sisa bagi. ++ dan -- menambah atau mengurangi satu.'],
+['.  (titik)','Operator penggabung string: "Halo " . $nama'],
+['==  !=  >  <  >=  <=','Perbandingan, hasilnya true atau false.'],
+['&&  ||  !','Logika: dan, atau, bukan. Boleh juga ditulis and, or, xor.'],
+['//  #  /* */','Komentar. Tidak dijalankan PHP.']
+],
+code:{fn:'latihan3.php',lang:'php',src:`<?php
+$a = "5";
+$b = "2.5";
+$tambah = $a + $b;
+$nama = "STIKI";
+
+echo "Hasil penjumlahan a dan b adalah = $tambah <br>";
+echo "Selamat datang di Lab " . $nama . "<br>";
+?>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Penulisan variabel yang benar di PHP adalah...',o:['$nama = "Joni";','nama = "Joni";','@nama = "Joni";','var nama = "Joni";'],why:'Variabel PHP wajib diawali $.'},
+{k:'output',t:'mcq',q:'Apa yang ditampilkan kode ini?',code:'<?php\n$a = "5";\n$b = "2.5";\necho $a + $b;\n?>',lang:'php',o:['7.5','52.5','7','Error'],why:'Tanda + adalah penjumlahan angka. PHP mengubah "5" dan "2.5" menjadi angka dulu. Untuk menggabung teks, pakai titik.'},
+{k:'output',t:'mcq',q:'Berapa hasil echo 10 % 3;',o:['1','3','0','3.33'],why:'% adalah modulus: sisa dari 10 dibagi 3. 3 x 3 = 9, sisanya 1.'},
+{k:'output',t:'mcq',q:'Nilai $x yang tampil adalah...',code:'<?php\n$x = 10;\n$x++;\necho $x;\n?>',lang:'php',o:['11','10','9','1'],why:'$x++ menambah isi $x sebanyak satu.'},
+{k:'pilihan',t:'mcq',q:'Cara membuat konstanta di PHP adalah...',o:['define("NILAI", 90);','$NILAI = 90;','const $NILAI = 90;','constant NILAI = 90;'],why:'Modul memakai define(nama, nilai). Nama konstanta tidak diawali $.'},
+{k:'lengkapi',t:'fill',q:'Isi operator untuk menggabungkan teks dengan variabel.',lang:'php',code:'echo "Nama : " ___ $nama;',ans:['.'],why:'Titik adalah operator penggabung string di PHP.'}
+],
+task:{title:'Saldo Tabungan',
+brief:'Seorang nasabah menabung Rp2.000.000 di bank X. Bunga 3% per bulan dari saldo awal. Hitung saldo akhir setelah 11 bulan, lalu tampilkan.',
+hint:'Bunga per bulan = saldoAwal * bunga. Kalikan dengan jumlah bulan, lalu tambahkan ke saldo awal.',
+fn:'tabungan.php',lang:'php',
+sol:`<?php
+$saldoAwal = 2000000;
+$bunga     = 0.03;
+$bulan     = 11;
+
+// bunga 3% dari saldo awal, tiap bulan
+$saldoAkhir = $saldoAwal + ($saldoAwal * $bunga * $bulan);
+
+echo "Saldo akhir setelah " . $bulan . " bulan adalah : Rp. "
+   . number_format($saldoAkhir, 0, ',', '.') . ",-";
+?>`,
+note:'Hasilnya Rp. 2.660.000,-. Tantangan: kalau bunganya berbunga (majemuk), rumusnya $saldoAwal * pow(1 + $bunga, $bulan) dan hasilnya Rp. 2.768.468,-.'}
+});
+
+MODS.push({n:4,rom:'IV',pert:'4',title:'Pernyataan Kondisi',
+intro:'Program juga perlu mengambil keputusan, sama seperti kamu pas milih jajan di kantin.',
+points:[
+['if (syarat) { ... }','Blok dijalankan hanya kalau syarat bernilai true. Kalau false, dilewati.'],
+['if ... else','Dua cabang: satu untuk true, satu untuk false.'],
+['if ... elseif ... else','Banyak cabang. PHP mengecek dari atas dan berhenti di syarat pertama yang cocok.'],
+['switch ($var) { case ... }','Cocok kalau satu variabel punya banyak kemungkinan nilai tetap.'],
+['break;','Wajib di tiap case supaya PHP tidak lanjut masuk ke case di bawahnya.'],
+['= dan ==','= mengisi nilai. == membandingkan nilai. Tertukar sedikit, hasilnya beda jauh.']
+],
+code:{fn:'kondisi_2.php',lang:'php',src:`<?php
+$nilai = 80;
+
+if ($nilai >= 90) {
+    echo "Nilai Memuaskan";
+} elseif ($nilai >= 80) {
+    echo "Nilai Bagus";
+} elseif ($nilai >= 50) {
+    echo "Nilai Kurang";
+} else {
+    echo "Nilai Sangat Kurang";
+}
+?>`},
+qs:[
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$nilai = 85;\nif ($nilai >= 90) {\n    echo "Memuaskan";\n} elseif ($nilai >= 80) {\n    echo "Bagus";\n} elseif ($nilai >= 50) {\n    echo "Kurang";\n} else {\n    echo "Sangat Kurang";\n}\n?>',lang:'php',o:['Bagus','Memuaskan','Kurang','Bagus dan Kurang'],why:'85 tidak >= 90, tapi >= 80. Cabang itu dijalankan dan sisanya dilewati.'},
+{k:'output',t:'mcq',q:'Apa yang tampil di browser?',code:'<?php\n$nilai = 45;\nif ($nilai >= 60) {\n    echo "Anda Lulus";\n}\n?>',lang:'php',o:['Tidak ada apa-apa','Anda Lulus','Error','45'],why:'Syarat false dan tidak ada else, jadi tidak ada yang dicetak.'},
+{k:'pilihan',t:'mcq',q:'Apa fungsi break di dalam case pada switch?',o:['Menghentikan switch agar tidak lanjut ke case berikutnya','Mengulang switch dari awal','Menghapus variabel kondisi','Menampilkan pesan error'],why:'Tanpa break, PHP terus menjalankan case-case di bawahnya.'},
+{k:'bug',t:'mcq',q:'Variabel $username berisi "Budi", tetapi muncul "Berhasil Login". Kenapa?',code:'<?php\n$username = "Budi";\nif ($username = "Roman") {\n    echo "Berhasil Login";\n} else {\n    echo "Username salah";\n}\n?>',lang:'php',o:['Tanda = mengisi nilai, bukan membandingkan. Seharusnya ==','Kata else salah tulis','Tanda kutip harus tunggal','if tidak boleh dipakai untuk string'],why:'$username = "Roman" mengisi variabel dengan Roman dan hasilnya dianggap true. Untuk membandingkan, pakai ==.'},
+{k:'lengkapi',t:'fill',q:'Lengkapi agar program tidak jatuh ke case berikutnya.',lang:'php',code:'switch ($hari) {\n    case 1:\n        echo "Senin";\n        ___;\n    case 2:\n        echo "Selasa";\n        break;\n}',ans:['break','break;'],why:'break mengakhiri switch setelah case yang cocok selesai.'}
+],
+task:{title:'Biaya Fotokopi',
+brief:'Harga fotokopi per lembar: kurang dari 100 lembar Rp150, 100 sampai 200 lembar Rp100, lebih dari 200 lembar Rp80. Berapa biaya untuk 158 lembar? Pakai if-else.',
+hint:'Tentukan harga per lembar dulu lewat if / elseif / else, baru kalikan dengan jumlah lembar.',
+fn:'fotokopi.php',lang:'php',
+sol:`<?php
+$jumlah = 158;
+
+if ($jumlah < 100) {
+    $harga = 150;
+} elseif ($jumlah <= 200) {
+    $harga = 100;
+} else {
+    $harga = 80;
+}
+
+$total = $jumlah * $harga;
+echo "Biaya fotokopi $jumlah lembar = Rp. $total";
+?>`,
+note:'158 lembar masuk kelompok 100 sampai 200, jadi 158 x 100 = Rp. 15.800.'}
+});
+</script>
+<script>
+MODS.push({n:5,rom:'V',pert:'5',title:'Pernyataan Perulangan',
+intro:'Males nulis echo seratus kali? Serahkan ke perulangan.',
+points:[
+['while (kondisi) { ... }','Cek kondisi dulu, baru jalan. Berhenti ketika kondisi menjadi false.'],
+['do { ... } while (kondisi);','Jalan dulu, baru cek kondisi. Jadi isinya pasti dijalankan minimal satu kali.'],
+['for (awal; syarat; langkah)','Cocok kalau jumlah putarannya sudah jelas, misalnya dari 1 sampai 10.'],
+['perulangan bersarang','Loop di dalam loop. Loop dalam selesai penuh untuk setiap satu putaran loop luar.'],
+['$i++','Jangan lupa mengubah variabel penghitung, kalau tidak loop tidak pernah berhenti.']
+],
+code:{fn:'perulangan_3.php',lang:'php',src:`<?php
+$bil = 5;
+while ($bil <= 100) {
+    if ($bil % 10 == 0) {
+        echo $bil . "<br />";
+    }
+    $bil++;
+}
+?>`},
+qs:[
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\nfor ($i = 1; $i <= 5; $i++) {\n    echo $i . " ";\n}\n?>',lang:'php',o:['1 2 3 4 5','0 1 2 3 4','1 2 3 4','5 4 3 2 1'],why:'$i mulai dari 1 dan berhenti ketika $i > 5, jadi 1 sampai 5.'},
+{k:'output',t:'mcq',q:'Berapa kali huruf A tercetak?',code:'<?php\n$n = 10;\ndo {\n    echo "A";\n} while ($n < 5);\n?>',lang:'php',o:['1 kali','0 kali','5 kali','Tak terhingga'],why:'do-while menjalankan isinya dulu, baru mengecek kondisi. Kondisi false, jadi berhenti setelah 1 kali.'},
+{k:'bug',t:'mcq',q:'Program ini membuat browser macet. Kenapa?',code:'<?php\n$i = 1;\nwhile ($i <= 5) {\n    echo $i;\n}\n?>',lang:'php',o:['$i tidak pernah bertambah, kondisi selalu true','Seharusnya memakai for','echo tidak boleh di dalam while','Kurang tanda kutip'],why:'Tanpa $i++, nilai $i tetap 1 dan kondisi $i <= 5 terus true. Itu disebut infinite loop.'},
+{k:'output',t:'mcq',q:'Berapa kali "Halo" tercetak?',code:'<?php\nfor ($a = 1; $a <= 3; $a++) {\n    for ($b = 1; $b <= 2; $b++) {\n        echo "Halo ";\n    }\n}\n?>',lang:'php',o:['6','5','3','2'],why:'Loop luar 3 putaran, tiap putaran loop dalam jalan 2 kali: 3 x 2 = 6.'},
+{k:'output',t:'mcq',q:'Berapa nilai $bilangan yang tercetak?',code:'<?php\n$bilangan = 0;\nfor ($a = 1; $a <= 5; $a++) {\n    $bilangan = $bilangan + $a;\n}\necho $bilangan;\n?>',lang:'php',o:['15','10','5','55'],why:'1 + 2 + 3 + 4 + 5 = 15.'},
+{k:'lengkapi',t:'fill',q:'Isi operator agar hanya kelipatan 10 yang dicetak.',lang:'php',code:'if ($bil ___ 10 == 0) {\n    echo $bil;\n}',ans:['%'],why:'Kalau sisa bagi dengan 10 adalah 0, berarti bilangan itu kelipatan 10.'}
+],
+task:{title:'Tiga Soal Perulangan',
+brief:'(1) Tampilkan bilangan bulat 5 sampai 100 yang kelipatan 10. (2) Jumlahkan bilangan 2 sampai 50. (3) Hitung ada berapa bilangan dari 3 sampai 127 yang kelipatan 6.',
+hint:'Ketiganya memakai loop dan variabel penampung ($jumlah, $banyak). Kelipatan dicek dengan %.',
+fn:'tugas_perulangan.php',lang:'php',
+sol:`<?php
+// 1. kelipatan 10 dari 5 sampai 100
+for ($i = 5; $i <= 100; $i++) {
+    if ($i % 10 == 0) echo $i . " ";
+}
+echo "<br>";
+
+// 2. jumlah bilangan 2 sampai 50
+$jumlah = 0;
+for ($i = 2; $i <= 50; $i++) {
+    $jumlah += $i;
+}
+echo "Jumlah 2-50 = $jumlah<br>";
+
+// 3. banyaknya kelipatan 6 dari 3 sampai 127
+$banyak = 0;
+for ($i = 3; $i <= 127; $i++) {
+    if ($i % 6 == 0) $banyak++;
+}
+echo "Banyak kelipatan 6 = $banyak";
+?>`,
+note:'Hasil yang benar: 10 20 30 ... 100, jumlahnya 1274, dan banyaknya 21 bilangan.'}
+});
+
+MODS.push({n:6,rom:'VI',pert:'6',title:'Array',
+intro:'Satu variabel, banyak isi. Kayak tas sekolah yang punya banyak kantong.',
+points:[
+['array("a","b","c")','Array berindeks. Indeks otomatis mulai dari 0, jadi elemen pertama adalah $arr[0].'],
+['"kunci" => "nilai"','Array asosiatif: elemen dicari lewat nama kunci, bukan nomor. Contoh $umur["Romeo"].'],
+['array_push()  array_shift()','push menambah elemen di akhir. shift menghapus elemen pertama.'],
+['array_merge()  count()','merge menggabungkan beberapa array. count menghitung jumlah elemen.'],
+['foreach ($arr as $k => $v)','Cara paling sering untuk membaca semua isi array. $k menampung kunci, $v nilainya.'],
+['sort  rsort  asort  arsort  ksort  krsort','sort/rsort urut naik/turun menurut nilai. asort/arsort sama tapi kunci tetap menempel. ksort/krsort urut menurut kunci.']
+],
+code:{fn:'array3.php',lang:'php',src:`<?php
+$pegawai = array("lina", "arni", "jona", "punjabi");
+
+echo "<strong>Sebelum diurutkan</strong><br />";
+foreach ($pegawai as $data => $nama) {
+    echo "$data: $nama<br />";
+}
+
+sort($pegawai);
+
+echo "<strong>Setelah diurutkan</strong><br />";
+foreach ($pegawai as $data => $nama) {
+    echo "$data: $nama<br />";
+}
+?>`},
+qs:[
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$mobil = array("Volvo", "BMW", "Toyota");\necho $mobil[1];\n?>',lang:'php',o:['BMW','Volvo','Toyota','1'],why:'Indeks array dimulai dari 0. Indeks 1 adalah elemen kedua.'},
+{k:'output',t:'mcq',q:'Berapa nilai yang tercetak?',code:'<?php\n$a = array("a", "b", "c");\narray_push($a, "d");\necho count($a);\n?>',lang:'php',o:['4','3','5','d'],why:'array_push menambah satu elemen. count menghitung semuanya: 4.'},
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$m = array("Rina", "Andi", "Budi");\nsort($m);\necho $m[0];\n?>',lang:'php',o:['Andi','Rina','Budi','Tidak ada'],why:'sort mengurutkan A-Z, jadi Andi, Budi, Rina. Indeks 0 adalah Andi.'},
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$x = array("A", "B", "C");\narray_shift($x);\necho $x[0];\n?>',lang:'php',o:['B','A','C','Error'],why:'array_shift membuang elemen pertama, lalu indeks disusun ulang. B jadi elemen pertama.'},
+{k:'pilihan',t:'mcq',q:'Fungsi yang mengurutkan array berdasarkan KUNCI-nya adalah...',o:['ksort()','sort()','asort()','rsort()'],why:'ksort = key sort. asort mengurutkan menurut nilai tapi mempertahankan kunci.'},
+{k:'lengkapi',t:'fill',q:'Lengkapi kata kunci foreach.',lang:'php',code:'foreach ($umur ___ $nama => $usia) {\n    echo "$nama: $usia<br>";\n}',ans:['as'],why:'Bentuknya foreach ($array as $kunci => $nilai).'}
+],
+task:{title:'Nilai Siswa (Array Asosiatif)',
+brief:'Buat array asosiatif berisi 4 nama siswa beserta nilainya. Tampilkan dengan foreach, lalu tampilkan lagi setelah diurutkan: nilai tertinggi dulu (arsort), dan nama A-Z (ksort).',
+hint:'Gunakan arsort($nilai) untuk menurut nilai terbesar, dan ksort($nilai) untuk menurut abjad nama. Panggil foreach setelah tiap pengurutan.',
+fn:'nilai_siswa.php',lang:'php',
+sol:`<?php
+$nilai = array("Dewi" => 88, "Andi" => 75, "Citra" => 92, "Budi" => 80);
+
+echo "<b>Asli</b><br>";
+foreach ($nilai as $nama => $n) { echo "$nama: $n<br>"; }
+
+arsort($nilai);   // nilai terbesar dulu
+echo "<b>arsort</b><br>";
+foreach ($nilai as $nama => $n) { echo "$nama: $n<br>"; }
+
+ksort($nilai);    // nama A-Z
+echo "<b>ksort</b><br>";
+foreach ($nilai as $nama => $n) { echo "$nama: $n<br>"; }
+?>`,
+note:'Urutan arsort: Citra 92, Dewi 88, Budi 80, Andi 75. Urutan ksort: Andi, Budi, Citra, Dewi. Bonus tugas modul: coba 5 fungsi array lain seperti array_pop, in_array, array_reverse, array_sum, array_keys.'}
+});
+</script>
+<script>
+MODS.push({n:7,rom:'VII',pert:'9',title:'Form',
+intro:'Form adalah pintu masuk data dari pengguna. PHP yang menangkapnya di sisi server.',
+points:[
+['<form action method>','action = file tujuan yang memproses data. method = cara kirim: GET atau POST.'],
+['GET dan POST','GET membawa data lewat address bar (URL). POST mengirimnya tanpa terlihat di URL.'],
+['$_POST["nama"]','Cara PHP mengambil isi input yang name-nya "nama" dan dikirim dengan POST.'],
+['text, radio, checkbox','Radio: satu pilihan, semua radio satu grup harus name sama. Checkbox: boleh lebih dari satu atau tidak sama sekali.'],
+['<select> dan <textarea>','Combo box untuk memilih dari daftar, textarea untuk teks panjang seperti alamat.'],
+['upload file','Form wajib method POST dan enctype="multipart/form-data". Di PHP, file ada di $_FILES.'],
+['is_uploaded_file()  move_uploaded_file()','Cek apakah ada file terunggah, lalu pindahkan dari folder sementara ke folder tujuan.']
+],
+code:{fn:'form_text.php + proses_text.php',lang:'php',src:`<form method="POST" action="proses_text.php">
+    <p>NIM  <input type="text" name="nim"></p>
+    <p>Nama <input type="text" name="nama"></p>
+    <p><input type="submit" name="Button" value="Tampil"></p>
+</form>
+
+<?php
+// proses_text.php
+$nim  = $_POST['nim'];
+$nama = $_POST['nama'];
+
+echo "NIM : $nim <br>";
+echo "Nama : $nama <br>";
+?>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Method form yang TIDAK menampilkan data di address bar adalah...',o:['POST','GET','SEND','PUT'],why:'POST mengirim data di badan permintaan. GET menempelkannya di URL.'},
+{k:'pilihan',t:'mcq',q:'Agar hanya satu radio button dalam satu grup yang bisa dipilih, atribut name semua radio harus...',o:['sama','berbeda semua','kosong','berupa angka'],why:'Browser menganggap radio ber-name sama sebagai satu grup, lalu mengizinkan satu pilihan.'},
+{k:'pilihan',t:'mcq',q:'Input <input type="text" name="nim"> dikirim dengan POST. Cara mengambilnya di PHP...',o:['$_POST["nim"]','$_GET["nim"]','$_FILES["nim"]','$nim'],why:'$_POST berisi semua data yang dikirim dengan method POST, diakses lewat nama inputnya.'},
+{k:'pilihan',t:'mcq',q:'Kenapa isi checkbox dicek dengan isset($_POST["game1"])?',o:['Checkbox yang tidak dicentang tidak dikirim sama sekali','Checkbox selalu dikirim kosong','isset mengubah checkbox jadi radio','Karena checkbox hanya bisa memakai GET'],why:'Kalau tidak dicentang, kuncinya tidak ada di $_POST. Mengakses kunci yang tidak ada akan memunculkan peringatan.'},
+{k:'pilihan',t:'mcq',q:'$_FILES["file"]["tmp_name"] berisi...',o:['Lokasi sementara file di server sebelum dipindahkan','Nama asli file di komputer pengguna','Ukuran file dalam byte','Kode error upload'],why:'Nama asli ada di ["name"], ukuran di ["size"], error di ["error"].'},
+{k:'lengkapi',t:'fill',q:'Atribut apa yang wajib ada pada form upload?',lang:'html',code:'<form method="POST" action="proses_upload.php" ___="multipart/form-data">',ans:['enctype'],why:'Tanpa enctype yang benar, file tidak ikut terkirim dan $_FILES kosong.'}
+],
+task:{title:'Biodata dan Login',
+brief:'Buat program biodata yang memakai lima jenis input: text, radio, checkbox, combo box, dan textarea. Tampilkan hasilnya di halaman proses.',
+hint:'Satu form, satu file proses. Radio dan combo box dibaca langsung dengan $_POST. Checkbox dibaca dengan isset.',
+fn:'biodata.php',lang:'php',
+sol:`<form method="POST" action="">
+    <p>Nama: <input type="text" name="nama"></p>
+    <p>Jenis kelamin:
+       <input type="radio" name="jk" value="Laki-laki"> Laki-laki
+       <input type="radio" name="jk" value="Perempuan"> Perempuan</p>
+    <p>Hobi:
+       <input type="checkbox" name="hobi1" value="Membaca"> Membaca
+       <input type="checkbox" name="hobi2" value="Coding"> Coding</p>
+    <p>Hari favorit:
+       <select name="hari">
+          <option value="Senin">Senin</option>
+          <option value="Jumat">Jumat</option>
+       </select></p>
+    <p>Alamat:<br><textarea name="alamat"></textarea></p>
+    <p><input type="submit" name="kirim" value="Tampil"></p>
+</form>
+
+<?php
+if (isset($_POST['kirim'])) {
+    echo "Nama: " . htmlspecialchars($_POST['nama']) . "<br>";
+    echo "Jenis kelamin: " . ($_POST['jk'] ?? "-") . "<br>";
+    echo "Hobi: ";
+    if (isset($_POST['hobi1'])) echo $_POST['hobi1'] . " ";
+    if (isset($_POST['hobi2'])) echo $_POST['hobi2'] . " ";
+    echo "<br>Hari favorit: " . $_POST['hari'] . "<br>";
+    echo "Alamat: " . htmlspecialchars($_POST['alamat']);
+}
+?>`,
+note:'htmlspecialchars() mengamankan teks dari pengguna sebelum dicetak. Tugas kedua di modul adalah form login sederhana, kamu akan membuatnya di Modul IX.'}
+});
+
+MODS.push({n:8,rom:'VIII',pert:'9',title:'Function',
+intro:'Tulis sekali, pakai berkali-kali. Fungsi itu resep yang bisa dimasak kapan saja.',
+points:[
+['function nama() { ... }','Deklarasi fungsi. Isinya tidak jalan sampai fungsinya dipanggil.'],
+['nama();','Pemanggilan fungsi: tulis namanya lalu tanda kurung.'],
+['parameter','Nilai masukan untuk fungsi: function tambah($x, $y). Saat dipanggil: tambah(3, 4).'],
+['return','Mengembalikan hasil ke pemanggil sehingga bisa disimpan atau dipakai lagi: $h = tambah(3, 4);'],
+['fungsi memanggil fungsi','Boleh. Di modul, luas_persegi() memanggil volume() di dalamnya.']
+],
+code:{fn:'function1.php',lang:'php',src:`<?php
+function volume($luas, $tinggi) {
+    $volume = $luas * $tinggi;
+    echo "Volume ialah : $volume cm";
+}
+
+function luas_persegi($p, $l, $t) {
+    $luas = $p * $l;
+    echo "Luas Persegi ialah : $luas cm<br/>";
+    volume($luas, $t);
+}
+
+luas_persegi(20, 10, 5);
+?>`},
+qs:[
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\nfunction tambah($x, $y) {\n    return $x + $y;\n}\necho tambah(3, 4);\n?>',lang:'php',o:['7','34','12','Tidak ada'],why:'return mengembalikan 3 + 4 = 7, lalu echo mencetaknya.'},
+{k:'output',t:'mcq',q:'Apa yang tampil di browser?',code:'<?php\nfunction sapa() {\n    echo "Hai";\n}\n?>',lang:'php',o:['Tidak ada apa-apa, fungsinya belum dipanggil','Hai','sapa','Error'],why:'Mendeklarasikan fungsi tidak menjalankannya. Perlu tulis sapa(); agar dipanggil.'},
+{k:'output',t:'mcq',q:'Berapa nilai $h yang tercetak?',code:'<?php\nfunction kali($a, $b) {\n    return $a * $b;\n}\n$h = kali(2, 5) + 1;\necho $h;\n?>',lang:'php',o:['11','10','25','7'],why:'kali(2, 5) = 10, lalu ditambah 1 = 11. Hasil return bisa langsung dipakai di operasi lain.'},
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\nfunction volume($luas, $tinggi) {\n    $v = $luas * $tinggi;\n    echo "Volume $v";\n}\nfunction luas_persegi($p, $l, $t) {\n    $luas = $p * $l;\n    echo "Luas $luas<br>";\n    volume($luas, $t);\n}\nluas_persegi(20, 10, 5);\n?>',lang:'php',o:['Luas 200, lalu Volume 1000','Luas 200 saja','Volume 1000 saja','Luas 30, lalu Volume 150'],why:'luas_persegi menghitung 20 x 10 = 200, mencetaknya, lalu memanggil volume(200, 5) = 1000.'},
+{k:'pilihan',t:'mcq',q:'Apa itu parameter pada sebuah fungsi?',o:['Nilai masukan yang diberikan ke fungsi','Nama file tempat fungsi disimpan','Hasil yang keluar dari fungsi','Komentar penjelas fungsi'],why:'Parameter adalah masukan, contohnya $x dan $y pada function tambah($x, $y).'},
+{k:'lengkapi',t:'fill',q:'Lengkapi kata kunci untuk membuat fungsi.',lang:'php',code:'___ luas($p, $l) {\n    return $p * $l;\n}',ans:['function'],why:'Semua fungsi buatan sendiri dimulai dengan kata function.'}
+],
+task:{title:'Bilangan Ganjil',
+brief:'Buat fungsi untuk mengecek apakah suatu bilangan ganjil. Gunakan fungsi itu untuk menghitung jumlah bilangan ganjil antara 10 sampai 123456.',
+hint:'Bilangan ganjil punya sisa 1 jika dibagi 2. Fungsi mengembalikan true atau false, lalu dipanggil di dalam loop.',
+fn:'ganjil.php',lang:'php',
+sol:`<?php
+function isGanjil($n) {
+    return $n % 2 == 1;
+}
+
+$banyak = 0;
+$jumlah = 0;
+
+for ($i = 10; $i <= 123456; $i++) {
+    if (isGanjil($i)) {
+        $banyak++;
+        $jumlah += $i;
+    }
+}
+
+echo "Banyak bilangan ganjil : $banyak<br>";
+echo "Jumlah bilangan ganjil : $jumlah";
+?>`,
+note:'Ada 61723 bilangan ganjil di rentang itu (11 sampai 123455), dan jumlahnya 3.810.345.959. Soal modul menyebut "jumlah", jadi tampilkan keduanya.'}
+});
+
+MODS.push({n:9,rom:'IX',pert:'10',title:'Session dan Cookies',
+intro:'Web itu pelupa. Session dan cookie membuat server ingat siapa kamu.',
+points:[
+['session','Data pengguna yang disimpan di server. Dipakai untuk login, jadi tiap halaman bisa mengecek siapa yang masuk.'],
+['session_start()','Wajib dipanggil paling atas, sebelum ada output apa pun, sebelum memakai $_SESSION.'],
+['$_SESSION["login"] = 1','Menyimpan data ke session. Dibaca lagi di halaman mana pun yang sudah memanggil session_start().'],
+['session_destroy()','Mengakhiri session. Inilah inti dari proses logout.'],
+['cookie','Data kecil yang disimpan di browser pengguna: setcookie("nama", "isi", time() + detik).'],
+['$_COOKIE["nama"]','Membaca cookie. Cookie baru terbaca pada permintaan berikutnya, bukan di halaman yang sama saat dibuat.'],
+['hash password','Di modul, password ditulis polos agar mudah dipelajari. Di aplikasi nyata, simpan dengan password_hash() dan cek dengan password_verify().']
+],
+code:{fn:'cookie.php',lang:'php',src:`<?php
+$expire = time() + 10;                 // aktif 10 detik
+setcookie('netter', 1, $expire);
+?>
+<html>
+<body>
+<?php
+if (isset($_COOKIE['netter'])) {
+    echo "Selamat Datang Kembali";
+} else {
+    echo "Selamat Datang, Ini Kunjungan Anda Pertama Kalinya";
+}
+?>
+</body>
+</html>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Di mana session disimpan, dan di mana cookie disimpan?',o:['Session di server, cookie di browser','Session di browser, cookie di server','Keduanya di server','Keduanya di browser'],why:'Session disimpan server, browser hanya memegang ID-nya. Cookie berisi data langsung di browser.'},
+{k:'pilihan',t:'mcq',q:'session_start() harus dipanggil...',o:['Paling awal, sebelum output apa pun dan sebelum memakai $_SESSION','Setelah tag </html>','Hanya di halaman logout','Setelah memakai $_SESSION'],why:'Session memakai header HTTP, jadi harus dimulai sebelum ada teks atau HTML yang dikirim.'},
+{k:'output',t:'mcq',q:'Berapa lama cookie ini aktif?',code:'<?php\nsetcookie("netter", 1, time() + 10);\n?>',lang:'php',o:['10 detik','10 menit','10 jam','Selamanya'],why:'Waktu kedaluwarsa dihitung dalam detik. time() adalah waktu sekarang, ditambah 10 detik.'},
+{k:'output',t:'mcq',q:'Saat kamu pertama kali membuka cookie.php (di atas), pesan apa yang tampil?',o:['Ini Kunjungan Anda Pertama Kalinya','Selamat Datang Kembali','Tidak ada pesan','Error'],why:'Cookie dikirim ke browser bersama respons, sehingga baru terbaca di $_COOKIE pada permintaan berikutnya.'},
+{k:'pilihan',t:'mcq',q:'Cara menangani penyusup yang membuka halaman Link 1 tanpa login adalah...',o:['Cek isset($_SESSION["login"]) di awal tiap halaman dan alihkan ke login jika belum ada','Menyembunyikan link di menu','Menamai file dengan nama rumit','Memakai method GET'],why:'Menyembunyikan link tidak melindungi apa pun. Penjagaan harus ada di server, di setiap halaman.'},
+{k:'lengkapi',t:'fill',q:'Isi fungsi untuk mengakhiri session saat logout.',lang:'php',code:'<?php\nsession_start();\n___();\nheader("location: login.php");\n?>',ans:['session_destroy','session_destroy()'],why:'session_destroy() menghapus data session pengguna.'}
+],
+task:{title:'Autentikasi dengan Session',
+brief:'Buat aplikasi login. Username dan password disimpan di sebuah array (Ali/password1, Bona/password2, dan seterusnya). Jika login benar, tampilkan halaman dengan menu Link 1, 2, 3 dan Logout. Salah username dan salah password harus punya pesan berbeda, halaman tanpa login harus ditolak, dan logout harus berfungsi.',
+hint:'Array asosiatif: "Ali" => "password1". Cek isset($users[$u]) untuk username, lalu bandingkan password. Simpan $_SESSION["username"] kalau berhasil.',
+fn:'login.php',lang:'php',
+sol:`<?php
+session_start();
+
+$users = array(
+    "Ali" => "password1", "Bona" => "password2", "Charlie" => "password3",
+    "Dede" => "password4", "Emon" => "password5"
+);
+
+$pesan = "";
+if (isset($_POST['login'])) {
+    $u = $_POST['username'];
+    $p = $_POST['password'];
+
+    if (!isset($users[$u])) {
+        $pesan = "Username tidak terdaftar";
+    } elseif ($users[$u] != $p) {
+        $pesan = "Password yang dimasukkan salah";
+    } else {
+        $_SESSION['username'] = $u;
+        header("Location: halaman.php");
+        exit();
+    }
+}
+?>
+<h2>Silakan Login</h2>
+<p style="color:red"><?php echo $pesan; ?></p>
+<form method="post">
+    Username <input type="text" name="username"><br>
+    Password <input type="password" name="password"><br>
+    <input type="submit" name="login" value="Submit">
+</form>
+
+<?php
+// halaman.php
+// session_start();
+// if (!isset($_SESSION['username'])) { header("Location: login.php"); exit(); }
+// echo "Username : " . $_SESSION['username'];
+// echo "<a href='logout.php'>Logout</a>";
+
+// logout.php
+// session_start(); session_destroy(); header("Location: login.php");
+?>`,
+note:'Dalam file nyata, pisahkan menjadi login.php, halaman.php, dan logout.php. Bagian di bawah berupa komentar sebagai kerangka halaman.php dan logout.php. Untuk aplikasi sungguhan, jangan simpan password polos.'}
+});
+</script>
+<script>
+MODS.push({n:10,rom:'X',pert:'11',title:'Database dalam PHP',
+intro:'Sekarang datamu nggak hilang waktu halaman ditutup. MySQL yang menyimpannya.',
+points:[
+['mysqli_connect(host, user, pass, db)','Membuka koneksi ke MySQL. Di XAMPP bawaan: localhost, root, password kosong.'],
+['mysqli_query($cnn, $sql)','Mengirim perintah SQL ke database dan mengembalikan hasilnya.'],
+['INSERT INTO ... VALUES (...)','Menambah data baru ke tabel.'],
+['UPDATE ... SET ... WHERE ...','Mengubah data. WHERE menentukan baris mana yang diubah.'],
+['DELETE FROM ... WHERE ...','Menghapus baris tertentu. Tanpa WHERE, semua baris terhapus.'],
+['SELECT ... FROM ...','Mengambil data. Hasilnya dibaca baris per baris dengan mysqli_fetch_array().'],
+['SQL injection','Jangan menempel input pengguna langsung ke query. Pakai prepared statement (mysqli_prepare).']
+],
+code:{fn:'tampil.php',lang:'php',src:`<?php
+$cnn = mysqli_connect('localhost', 'root', '', 'db_kampus');
+if (!$cnn) {
+    die("Koneksi Gagal: " . mysqli_connect_error());
+}
+
+$sql    = "SELECT nim, nama, alamat, telp FROM mahasiswa;";
+$tampil = mysqli_query($cnn, $sql);
+
+while ($data = mysqli_fetch_array($tampil)) {
+    echo "NIM : " . $data['nim'] . "<br/>";
+    echo "Nama : " . $data['nama'] . "<br/><br/>";
+}
+?>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Perintah SQL untuk menambah data baru ke tabel adalah...',o:['INSERT INTO','SELECT','UPDATE','CREATE'],why:'INSERT INTO menambah baris. SELECT membaca, UPDATE mengubah, DELETE menghapus.'},
+{k:'bug',t:'mcq',q:'Query ini gagal dijalankan. Apa kesalahannya?',code:"DELETE FORM mahasiswa WHERE nim = '1112134';",lang:'sql',o:['FORM seharusnya FROM','WHERE harus huruf kecil','nim tidak boleh diberi kutip','Kurang kata INTO'],why:'Salah ketik FORM. Bentuk yang benar: DELETE FROM nama_tabel WHERE syarat. Salah satu huruf saja sudah bikin query ditolak.'},
+{k:'output',t:'mcq',q:'Apa dampak query ini?',code:"UPDATE mahasiswa SET nama = 'Ayu';",lang:'sql',o:['Nama SEMUA mahasiswa berubah menjadi Ayu','Hanya mahasiswa pertama yang berubah','Query ditolak karena tidak ada WHERE','Tidak ada yang berubah'],why:'Tanpa WHERE, UPDATE berlaku untuk seluruh baris. Selalu cek WHERE sebelum menjalankan UPDATE atau DELETE.'},
+{k:'pilihan',t:'mcq',q:'Apa fungsi while ($data = mysqli_fetch_array($tampil)) ?',o:['Mengambil hasil SELECT baris demi baris sampai habis','Menghapus baris dari tabel satu per satu','Membuat tabel baru','Menutup koneksi'],why:'Tiap putaran mengambil satu baris hasil. Ketika baris habis, nilainya false dan loop berhenti.'},
+{k:'bug',t:'mcq',q:'Kode ini rentan terhadap SQL injection. Cara yang benar untuk memperbaikinya adalah...',code:'$nis = $_GET[\'nis\'];\n$query = "SELECT * FROM datasiswa WHERE nis=\'" . $nis . "\'";',lang:'php',o:['Memakai prepared statement dengan parameter terikat','Mengganti GET jadi POST saja','Menghapus tanda kutip','Menaruh kode di file lain'],why:'Input pengguna yang ditempel ke query bisa mengubah makna query. Prepared statement memisahkan perintah dari data.'},
+{k:'lengkapi',t:'fill',q:'Isi nama fungsi untuk membuka koneksi ke MySQL.',lang:'php',code:"$cnn = ___('localhost', 'root', '', 'db_kampus');",ans:['mysqli_connect'],why:'mysqli_connect(host, user, password, database).'}
+],
+task:{title:'CRUD Lima Teman',
+brief:'Buat aplikasi sederhana yang menampilkan 5 nama temanmu di kelas, dan bisa menambah serta menghapus nama.',
+hint:'Buat tabel teman (id, nama), file koneksi.php, lalu index.php untuk SELECT dan form tambah. Tombol hapus mengirim id lewat link.',
+fn:'index.php',lang:'php',
+sol:`-- jalankan di phpMyAdmin
+CREATE DATABASE db_kelas;
+USE db_kelas;
+CREATE TABLE teman (id INT AUTO_INCREMENT PRIMARY KEY, nama VARCHAR(50) NOT NULL);
+INSERT INTO teman (nama) VALUES ('Andi'),('Budi'),('Citra'),('Dewi'),('Eka');
+
+<?php
+// index.php
+$cnn = mysqli_connect('localhost', 'root', '', 'db_kelas');
+if (!$cnn) { die("Koneksi gagal: " . mysqli_connect_error()); }
+
+// Tambah
+if (isset($_POST['simpan'])) {
+    $stmt = mysqli_prepare($cnn, "INSERT INTO teman (nama) VALUES (?)");
+    mysqli_stmt_bind_param($stmt, "s", $_POST['nama']);
+    mysqli_stmt_execute($stmt);
+    header("Location: index.php"); exit;
+}
+
+// Hapus
+if (isset($_GET['hapus'])) {
+    $id = (int) $_GET['hapus'];
+    mysqli_query($cnn, "DELETE FROM teman WHERE id = $id");
+    header("Location: index.php"); exit;
+}
+
+$hasil = mysqli_query($cnn, "SELECT id, nama FROM teman ORDER BY id");
+?>
+<h2>Teman Sekelas</h2>
+<form method="post">
+    <input type="text" name="nama" required>
+    <input type="submit" name="simpan" value="Tambah">
+</form>
+<ol>
+<?php while ($d = mysqli_fetch_array($hasil)) { ?>
+    <li><?php echo htmlspecialchars($d['nama']); ?>
+        <a href="?hapus=<?php echo $d['id']; ?>">Hapus</a></li>
+<?php } ?>
+</ol>`,
+note:'Bagian SQL di paling atas dijalankan sekali di phpMyAdmin, bukan di dalam file PHP. Perhatikan: id dari URL diubah jadi angka dengan (int) dan nama dari form memakai prepared statement.'}
+});
+
+MODS.push({n:11,rom:'XI',pert:'12',title:'Buku Tamu',
+intro:'Proyek mini pertama: pengunjung tulis komentar, kamu simpan, lalu ditampilkan.',
+points:[
+['tabel bukutamu','Kolom: id (auto_increment, primary key), nama, email, url, komentar (text).'],
+['koneksi.php','Satu file koneksi dipakai bersama. Dipanggil dengan require("koneksi.php") atau include.'],
+['alur tambah','Form (POST) → proses_tambah.php (INSERT) → pesan terima kasih.'],
+['mysqli_affected_rows()','Banyaknya baris yang terpengaruh INSERT, UPDATE, atau DELETE. Lebih dari 0 berarti berhasil.'],
+['mysqli_num_rows()','Banyaknya baris hasil SELECT. Dipakai untuk cek ada data atau belum.'],
+['htmlspecialchars()','Mengamankan teks pengunjung saat dicetak agar kode HTML atau script di dalamnya tidak dijalankan.']
+],
+code:{fn:'proses_tambah.php',lang:'php',src:`<?php
+require("koneksi.php");
+
+if (isset($_POST["kirim"])) {
+    $nama     = $_POST["nama"];
+    $email    = $_POST["email"];
+    $url      = $_POST["url"];
+    $komentar = $_POST["komentar"];
+
+    $sql = "INSERT INTO bukutamu (nama, email, url, komentar)
+            VALUES ('$nama', '$email', '$url', '$komentar')";
+    mysqli_query($conn, $sql);
+
+    if (mysqli_affected_rows($conn) > 0) {
+        echo "<h2>Terima Kasih</h2>";
+    } else {
+        echo "Proses pencatatan gagal.";
+    }
+}
+?>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Apa beda utama include dan require?',o:['Jika file tidak ada, require menghentikan program, include hanya memberi peringatan','include untuk PHP, require untuk HTML','require lebih lambat dua kali','Tidak ada bedanya sama sekali'],why:'Untuk file penting seperti koneksi, pakai require agar program berhenti jika file hilang.'},
+{k:'pilihan',t:'mcq',q:'Untuk apa mysqli_num_rows($result) > 0 dipakai di halaman daftar komentar?',o:['Mengecek apakah ada data sebelum menampilkan tabel','Mengurutkan komentar','Menghapus komentar lama','Membuat tabel baru'],why:'Kalau hasilnya 0, tampilkan pesan "Belum ada komentar" daripada tabel kosong.'},
+{k:'bug',t:'mcq',q:'Form di modul memakai kode ini. Apa masalahnya?',code:'<input type="textfield" name="nama" maxlength="50">',lang:'html',o:['"textfield" bukan tipe input yang valid, yang benar type="text"','maxlength tidak boleh dipakai','name harus huruf besar','Kurang atribut action'],why:'Browser diam-diam menganggapnya text, tapi tidak valid. Pakai type="text".'},
+{k:'pilihan',t:'mcq',q:'Kolom id memakai AUTO_INCREMENT. Artinya...',o:['Nomornya naik otomatis tiap ada data baru','Nilai id selalu 1','Kolom id tidak boleh dipakai di SELECT','Id harus diketik manual'],why:'MySQL mengisi id sendiri: 1, 2, 3, dan seterusnya. Jadi tidak perlu ada di INSERT.'},
+{k:'pilihan',t:'mcq',q:'Kenapa komentar pengunjung sebaiknya dicetak dengan htmlspecialchars()?',o:['Agar tag HTML/script di komentar tidak dijalankan browser (XSS)','Agar komentar jadi huruf besar','Agar komentar lebih cepat tampil','Agar database tidak penuh'],why:'Tanpa itu, seseorang bisa menulis <script> di kolom komentar dan kode itu jalan di browser pengunjung lain.'},
+{k:'lengkapi',t:'fill',q:'Lengkapi kata pertama query untuk menyimpan komentar.',lang:'sql',code:"___ INTO bukutamu (nama, email, url, komentar)\nVALUES ('Iwa', 'iwa@mail.com', 'http://example.com', 'Halo!');",ans:['insert','INSERT'],why:'INSERT INTO nama_tabel (kolom) VALUES (nilai).'}
+],
+task:{title:'Buku Tamu Aman',
+brief:'Lengkapi buku tamu: tabel bukutamu, form isian, proses simpan, dan halaman daftar komentar yang menampilkan semua data dalam tabel.',
+hint:'Pakai prepared statement untuk INSERT, dan htmlspecialchars() saat mencetak. Tampilkan "Belum ada komentar" kalau data kosong.',
+fn:'tampil_data.php',lang:'php',
+sol:`-- tabel
+CREATE TABLE bukutamu (
+    id INT NOT NULL AUTO_INCREMENT,
+    nama VARCHAR(25), email VARCHAR(50), url VARCHAR(100), komentar TEXT,
+    PRIMARY KEY (id)
+);
+
+<?php
+// proses_tambah.php
+require("koneksi.php");
+if (isset($_POST['kirim'])) {
+    $stmt = mysqli_prepare($conn,
+        "INSERT INTO bukutamu (nama, email, url, komentar) VALUES (?, ?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "ssss",
+        $_POST['nama'], $_POST['email'], $_POST['url'], $_POST['komentar']);
+    mysqli_stmt_execute($stmt);
+    echo "Terima kasih, " . htmlspecialchars($_POST['nama']);
+}
+
+// tampil_data.php
+require("koneksi.php");
+$result = mysqli_query($conn, "SELECT nama, email, url, komentar FROM bukutamu");
+if (mysqli_num_rows($result) > 0) {
+    echo "<table border='1'><tr><th>Nama</th><th>Email</th><th>URL</th><th>Komentar</th></tr>";
+    while ($r = mysqli_fetch_array($result)) {
+        echo "<tr><td>" . htmlspecialchars($r['nama']) . "</td>";
+        echo "<td>" . htmlspecialchars($r['email']) . "</td>";
+        echo "<td>" . htmlspecialchars($r['url']) . "</td>";
+        echo "<td>" . htmlspecialchars($r['komentar']) . "</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "<i>Belum ada komentar.</i>";
+}
+?>`,
+note:'Dalam praktik, bagian setelah komentar // proses_tambah.php dan // tampil_data.php dipisah menjadi dua file. Modul menuliskan link URL dengan <a href="?php echo ...">, yang kurang tanda "<" di depannya, jadi periksa itu juga.'}
+});
+</script>
+<script>
+MODS.push({n:12,rom:'XII',pert:'13-14',title:'CRUD Data Siswa',
+intro:'Ini bagian database terakhir: CRUD lengkap, plus upload foto. Semua yang kamu pelajari ketemu di sini.',
+points:[
+['tabel datasiswa','nis (primary key), nama, jenis_kelamin, telp, alamat, foto.'],
+['index.php = Read','SELECT semua data, tampilkan dalam tabel, dengan foto dari folder images/.'],
+['form_simpan + proses_simpan = Create','Form ber-enctype multipart. Proses memindahkan foto dengan move_uploaded_file, lalu INSERT.'],
+['date("dmYHis") . $foto','Nama foto diberi awalan tanggal-jam supaya unik dan tidak saling menimpa.'],
+['form_ubah + proses_ubah = Update','NIS dibawa lewat URL (?nis=101) dan dibaca dengan $_GET. Foto hanya diganti kalau kotak centang ubah_foto dicentang.'],
+['proses_hapus = Delete','Hapus file foto dulu dengan unlink(), baru hapus barisnya dengan DELETE.'],
+['kerangka halaman','Satu koneksi.php yang dipakai semua file lewat include.']
+],
+code:{fn:'proses_simpan.php',lang:'php',src:`<?php
+include "koneksi.php";
+
+$nis  = $_POST['nis'];
+$nama = $_POST['nama'];
+$foto = $_FILES['foto']['name'];
+$tmp  = $_FILES['foto']['tmp_name'];
+
+// nama foto dibuat unik: tanggal dan jam di depan nama asli
+$fotobaru = date('dmYHis') . $foto;
+$path     = "images/" . $fotobaru;
+
+if (move_uploaded_file($tmp, $path)) {
+    $query = "INSERT INTO datasiswa (nis, nama, foto)
+              VALUES ('$nis', '$nama', '$fotobaru')";
+    $sql = mysqli_query($connect, $query);
+    if ($sql) {
+        header("location: index.php");
+    } else {
+        echo "Maaf, terjadi kesalahan saat menyimpan ke database.";
+    }
+} else {
+    echo "Maaf, gambar gagal untuk diupload.";
+}
+?>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Kenapa nama foto diberi awalan date("dmYHis")?',o:['Supaya nama file unik dan tidak menimpa foto lain bernama sama','Agar foto otomatis mengecil','Agar foto tampil lebih cepat','Karena MySQL mewajibkannya'],why:'Dua siswa bisa mengunggah "foto.jpg". Tanggal dan jam di depan nama membuat tiap file berbeda.'},
+{k:'pilihan',t:'mcq',q:'Apa fungsi unlink("images/" . $data["foto"]) ?',o:['Menghapus file foto dari folder server','Membuat link ke foto','Mengubah nama foto','Memindahkan foto ke database'],why:'unlink menghapus file. Dipakai saat siswa dihapus atau fotonya diganti.'},
+{k:'pilihan',t:'mcq',q:'Link Ubah menuju form_ubah.php?nis=101. Bagaimana form_ubah.php membaca nilai 101?',o:['$_GET["nis"]','$_POST["nis"]','$_FILES["nis"]','$_SESSION["nis"]'],why:'Data di URL (setelah tanda tanya) dibaca dengan $_GET.'},
+{k:'pilihan',t:'mcq',q:'Kenapa file foto juga harus dihapus saat data siswa dihapus?',o:['Agar tidak ada file yatim yang menumpuk dan memenuhi server','Karena MySQL tidak bisa menghapus tanpa itu','Supaya URL tidak error','Tidak perlu, hanya kebiasaan'],why:'Kalau hanya barisnya yang dihapus, file di images/ tetap ada tanpa ada yang memakainya.'},
+{k:'bug',t:'mcq',q:'Setelah submit, $_FILES["foto"]["name"] kosong dan foto tidak terunggah. Apa yang paling mungkin kurang?',code:'<form method="post" action="proses_simpan.php">\n    <input type="file" name="foto">\n    <input type="submit" value="Simpan">\n</form>',lang:'html',o:['enctype="multipart/form-data" pada tag form','Atribut id pada input','Tag <br>','Method harus GET'],why:'Form yang mengunggah file wajib ber-method POST dan memakai enctype="multipart/form-data".'},
+{k:'lengkapi',t:'fill',q:'Isi fungsi agar foto hanya diganti jika kotak centang ubah_foto dicentang.',lang:'php',code:"if (___($_POST['ubah_foto'])) {\n    // proses upload foto baru\n}",ans:['isset'],why:'Checkbox yang tidak dicentang tidak dikirim, jadi isset() adalah cara mengeceknya.'}
+],
+task:{title:'Login untuk Siswa',
+brief:'Buat halaman login untuk aplikasi CRUD siswa. Hanya yang sudah login boleh membuka index.php. Gunakan session dan password yang di-hash.',
+hint:'Buat tabel users (username, password hash). Login memakai password_verify(). Di index.php, cek $_SESSION sebelum menampilkan apa pun.',
+fn:'login.php',lang:'php',
+sol:`-- tabel pengguna (password diisi hasil password_hash)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(30) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+<?php
+// buat_user.php (jalankan sekali)
+include "koneksi.php";
+$hash = password_hash("rahasia123", PASSWORD_DEFAULT);
+$stmt = mysqli_prepare($connect, "INSERT INTO users (username, password) VALUES (?, ?)");
+$u = "admin";
+mysqli_stmt_bind_param($stmt, "ss", $u, $hash);
+mysqli_stmt_execute($stmt);
+
+// login.php
+session_start();
+include "koneksi.php";
+$pesan = "";
+
+if (isset($_POST['login'])) {
+    $stmt = mysqli_prepare($connect, "SELECT password FROM users WHERE username = ?");
+    mysqli_stmt_bind_param($stmt, "s", $_POST['username']);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $hash);
+
+    if (mysqli_stmt_fetch($stmt) && password_verify($_POST['password'], $hash)) {
+        $_SESSION['login'] = true;
+        $_SESSION['username'] = $_POST['username'];
+        header("Location: index.php");
+        exit;
+    }
+    $pesan = "Username atau password salah";
+}
+
+// di baris paling atas index.php:
+// session_start();
+// if (!isset($_SESSION['login'])) { header("Location: login.php"); exit; }
+?>`,
+note:'Satu pesan yang sama untuk username salah dan password salah lebih aman daripada pesan terpisah, karena tidak membocorkan nama pengguna yang terdaftar. Bagian setelah komentar // dipisah menjadi file masing-masing saat kamu praktik.'}
+});
+
+MODS.push({n:13,rom:'XIII',pert:'15',title:'OOP dalam PHP',
+intro:'Terakhir: memikirkan program sebagai benda-benda. Mobil, siswa, rekening. Seru, lho.',
+points:[
+['class dan object','class = cetak biru. object = benda hasil cetakan: $mobil1 = new Mobil();'],
+['property','Data milik object: warna, merk, bensin. Ditulis di dalam class dengan public, protected, private, atau var.'],
+['method','Kemampuan object: maju(), mundur(), isibensin(). Bentuknya function di dalam class.'],
+['$this->','Merujuk ke object yang sedang menjalankan method itu. Contoh $this->bensin.'],
+['->','Operator untuk memanggil method atau membaca property: $mobil1->maju();'],
+['3 konsep dasar','Encapsulation (data dan prosesnya dibungkus jadi satu), inheritance (pewarisan antar class), polymorphism (method sama, aksi berbeda).'],
+['getter dan setter','Method kecil seperti setnama() dan getnama() untuk mengisi dan membaca property.']
+],
+code:{fn:'class_mobil.php',lang:'php',src:`<?php
+class Mobil {
+    var $bensin;
+
+    function maju()   { $this->bensin = $this->bensin - 2; }
+    function mundur() { $this->bensin = $this->bensin - 1; }
+    function isibensin($tambah) { $this->bensin = $this->bensin + $tambah; }
+    function sisabensin() { return $this->bensin; }
+}
+
+$mobil1 = new Mobil();
+$mobil1->isibensin(6);
+echo "Sisa bensin : ", $mobil1->sisabensin(), " Liter<br/>";
+$mobil1->maju();
+echo "Sisa bensin : ", $mobil1->sisabensin(), " Liter<br/>";
+?>`},
+qs:[
+{k:'pilihan',t:'mcq',q:'Pada $mobil1 = new Mobil(); , apa itu $mobil1?',o:['Object (hasil cetakan dari class Mobil)','Class','Method','Konstanta'],why:'Class adalah cetak birunya. new membuat object dari cetak biru itu.'},
+{k:'output',t:'mcq',q:'Berapa sisa bensin yang tercetak?',code:'<?php\n// class Mobil dari kode contoh di atas\n$m = new Mobil();\n$m->isibensin(6);\n$m->maju();      // bensin berkurang 2\n$m->mundur();    // bensin berkurang 1\necho $m->sisabensin();\n?>',lang:'php',o:['3','4','5','6'],why:'6 - 2 = 4, lalu 4 - 1 = 3.'},
+{k:'pilihan',t:'mcq',q:'Di dalam method, $this merujuk ke...',o:['Object yang sedang menjalankan method itu','Class induk','File PHP yang sedang berjalan','Variabel global'],why:'$this->bensin berarti bensin milik object yang memanggil method.'},
+{k:'pilihan',t:'mcq',q:'Konsep OOP "pewarisan", yaitu class baru mengambil sifat dan kemampuan class lain, disebut...',o:['Inheritance','Encapsulation','Polymorphism','Iteration'],why:'Inheritance membuat class turunan, misalnya Truk mewarisi Mobil.'},
+{k:'pilihan',t:'mcq',q:'Property private hanya bisa diakses dari...',o:['Di dalam class itu sendiri','Mana saja','Hanya file index.php','Hanya class turunan saja'],why:'Karena itu butuh getter dan setter untuk membaca atau mengubahnya dari luar. Ini contoh encapsulation.'},
+{k:'lengkapi',t:'fill',q:'Isi operator untuk memanggil method setnama dari object $mhs1.',lang:'php',code:'$mhs1 ___ setnama("Dwi Putri");',ans:['->'],why:'Tanda panah -> dipakai untuk memanggil method dan mengakses property object.'}
+],
+task:{title:'Daftar Mahasiswa dengan Class',
+brief:'Buat program yang memakai class Mahasiswa untuk membuat form input sederhana daftar mahasiswa di kelasmu. Data yang dimasukkan harus tampil sebagai daftar.',
+hint:'Class Mahasiswa punya property nim dan nama, serta method tampil(). Simpan data di $_SESSION sebagai array, lalu buat object saat menampilkan.',
+fn:'daftar_mahasiswa.php',lang:'php',
+sol:`<?php
+class Mahasiswa {
+    public $nim;
+    public $nama;
+
+    function __construct($nim, $nama) {
+        $this->nim  = $nim;
+        $this->nama = $nama;
+    }
+    function tampil() {
+        return htmlspecialchars($this->nim . " - " . $this->nama);
+    }
+}
+
+session_start();
+if (!isset($_SESSION['daftar'])) { $_SESSION['daftar'] = array(); }
+
+if (isset($_POST['simpan'])) {
+    $_SESSION['daftar'][] = array($_POST['nim'], $_POST['nama']);
+}
+?>
+<h2>Daftar Mahasiswa</h2>
+<form method="post">
+    NIM <input type="text" name="nim">
+    Nama <input type="text" name="nama">
+    <input type="submit" name="simpan" value="Simpan">
+</form>
+
+<ol>
+<?php
+foreach ($_SESSION['daftar'] as $d) {
+    $m = new Mahasiswa($d[0], $d[1]);
+    echo "<li>" . $m->tampil() . "</li>";
+}
+?>
+</ol>`,
+note:'Yang disimpan di session adalah array biasa, lalu object dibuat saat ditampilkan. Dengan begitu tidak ada masalah object yang gagal dibaca ulang. Kalau mau lanjut, simpan datanya ke MySQL seperti Modul XII.'}
+});
+</script>
+<script>
+(function(){
+const add=(n,...qs)=>MODS[n-1].qs.push(...qs);
+add(1,
+{k:'pilihan',t:'mcq',q:'Bagian dokumen HTML yang berisi informasi tentang dokumen (misalnya title) dan tidak tampil sebagai isi halaman adalah...',o:['<head>','<body>','<div>','<footer>'],why:'<head> menyimpan info tentang dokumen. Isi yang tampil di halaman ada di <body>.'},
+{k:'bug',t:'mcq',q:'Judul ini tidak tampil sebagai heading dengan benar. Apa kesalahannya?',code:'<h1>Selamat Datang</h2>',lang:'html',o:['Tag penutup harus </h1>, sama dengan tag pembukanya','Heading tidak boleh berisi teks','Harus memakai huruf besar','Kurang atribut href'],why:'Tag pembuka dan penutup harus berpasangan: <h1> ditutup dengan </h1>.'}
+);
+add(2,
+{k:'pilihan',t:'mcq',q:'Agar sebuah elemen punya garis tepi, tiga hal yang diatur pada border adalah...',o:['warna, gaya (style), dan lebar','posisi, margin, dan padding','warna, bayangan, dan tinggi','lebar, tinggi, dan jarak'],why:'Contoh: border: 5px solid black; yaitu lebar 5px, gaya solid, warna hitam.'},
+{k:'bug',t:'mcq',q:'Warna teks box tidak berubah menjadi kuning. Apa penyebabnya?',code:'.box {\n    background-color: green\n    color: yellow;\n}',lang:'css',o:['Tanda titik koma setelah green hilang','Nama class harus memakai #','color tidak boleh di dalam .box','yellow harus ditulis dengan kutip'],why:'Setiap property harus diakhiri titik koma. Tanpa itu, dua baris dibaca sebagai satu aturan yang rusak.'}
+);
+add(3,
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$nama = "Joni";\necho \'Hai $nama\';\n?>',lang:'php',o:['Hai $nama','Hai Joni','Hai','Error'],why:'Tanda kutip tunggal menampilkan teks apa adanya. Variabel baru diganti nilainya kalau memakai kutip ganda.'},
+{k:'pilihan',t:'mcq',q:'Penulisan komentar satu baris yang benar di PHP adalah...',o:['// ini komentar','** ini komentar','-- ini komentar','<> ini komentar'],why:'PHP mengenal //, #, dan /* ... */ untuk komentar.'}
+);
+add(4,
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$umur = 17;\nif ($umur >= 17 && $umur < 60) {\n    echo "Dewasa";\n} else {\n    echo "Bukan";\n}\n?>',lang:'php',o:['Dewasa','Bukan','DewasaBukan','Tidak ada'],why:'Kedua syarat benar (17 >= 17 dan 17 < 60), jadi && menghasilkan true.'},
+{k:'output',t:'mcq',q:'Apa yang tampil? Perhatikan baris break.',code:'<?php\n$x = 1;\nswitch ($x) {\n    case 1: echo "A";\n    case 2: echo "B"; break;\n    case 3: echo "C";\n}\n?>',lang:'php',o:['AB','A','ABC','B'],why:'case 1 tidak punya break, jadi PHP terus masuk ke case 2 dan baru berhenti di break-nya.'}
+);
+add(5,
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$i = 10;\nwhile ($i <= 5) {\n    echo $i;\n    $i++;\n}\necho "Selesai";\n?>',lang:'php',o:['Selesai','10Selesai','10 11 12 Selesai','Tidak berhenti'],why:'while mengecek kondisi dulu. 10 <= 5 sudah false, jadi isinya dilewati.'},
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\nfor ($i = 10; $i >= 1; $i -= 3) {\n    echo $i . " ";\n}\n?>',lang:'php',o:['10 7 4 1','10 7 4','10 9 8 7','7 4 1'],why:'Dimulai 10, dikurangi 3 tiap putaran: 10, 7, 4, 1. Setelah itu -2 sehingga berhenti.'}
+);
+add(6,
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$umur = array("Jorge" => "29", "Romeo" => "33");\necho $umur["Romeo"];\n?>',lang:'php',o:['33','29','Romeo','1'],why:'Pada array asosiatif, nilai dicari lewat nama kuncinya.'},
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\n$a = array(3, 1, 2);\nrsort($a);\necho $a[0];\n?>',lang:'php',o:['3','1','2','Tidak ada'],why:'rsort mengurutkan dari besar ke kecil: 3, 2, 1. Elemen pertama adalah 3.'}
+);
+add(7,
+{k:'pilihan',t:'mcq',q:'Form memakai method GET dan dikirim dengan nim 101. Bagaimana tampilan alamat di browser?',o:['proses.php?nim=101','proses.php saja, tanpa tambahan','proses.php/101','Muncul halaman kosong'],why:'GET menempelkan data ke URL setelah tanda tanya. Karena itu GET tidak cocok untuk data rahasia.'},
+{k:'pilihan',t:'mcq',q:'Untuk apa is_uploaded_file($_FILES["file"]["tmp_name"]) dipanggil sebelum move_uploaded_file()?',o:['Memastikan memang ada file yang terunggah','Menghapus file sementara','Mengubah nama file','Mengecek ukuran file'],why:'Pengecekan ini memastikan ada file hasil upload sebelum dipindahkan ke folder tujuan.'}
+);
+add(8,
+{k:'lengkapi',t:'fill',q:'Isi parameter agar fungsi bisa menyapa siapa saja.',lang:'php',code:'function sapa(___) {\n    echo "Halo " . $nama;\n}\nsapa("Budi");',ans:['$nama'],why:'Parameter ditulis seperti variabel. Isinya terisi dari nilai yang diberikan saat fungsi dipanggil.'},
+{k:'pilihan',t:'mcq',q:'Manfaat utama membuat fungsi adalah...',o:['Kode bisa dipakai berulang tanpa menulis ulang','Program otomatis jadi lebih cepat dua kali','Variabel jadi tidak perlu dideklarasikan','Browser tidak perlu membaca kode'],why:'Tulis sekali, panggil berkali-kali. Perbaikan juga cukup di satu tempat.'}
+);
+add(9,
+{k:'pilihan',t:'mcq',q:'Fungsi session_id() dipakai untuk...',o:['Mengambil atau menentukan ID sebuah session','Memulai session baru','Menghapus session','Membuat cookie'],why:'Setiap pengguna mendapat ID session berbeda, dan itulah yang membuat dua pengguna tidak tercampur.'},
+{k:'pilihan',t:'mcq',q:'Cara menghapus cookie adalah...',o:['Mengatur ulang cookie yang sama dengan isi kosong dan waktu kedaluwarsa yang sudah lewat','Memanggil session_destroy()','Menutup tab browser saja','Mengubah method form menjadi GET'],why:'Cookie hidup di browser. Dengan waktu yang sudah lewat, browser membuangnya.'}
+);
+add(10,
+{k:'pilihan',t:'mcq',q:'Perintah SQL yang benar untuk membuat database bernama db_kampus adalah...',o:['CREATE DATABASE db_kampus;','NEW DATABASE db_kampus;','MAKE db_kampus;','INSERT DATABASE db_kampus;'],why:'CREATE DATABASE dipakai untuk database, CREATE TABLE untuk tabel.'},
+{k:'output',t:'mcq',q:'Data apa yang dihasilkan query ini?',code:"SELECT nama, nilai FROM mahasiswa WHERE nim = '1112134';",lang:'sql',o:['Nama dan nilai milik mahasiswa ber-NIM 1112134 saja','Seluruh kolom semua mahasiswa','Hanya jumlah baris dalam tabel','Tidak ada, query ditolak'],why:'Daftar kolom setelah SELECT menentukan kolom yang tampil, dan WHERE menyaring baris.'}
+);
+add(11,
+{k:'pilihan',t:'mcq',q:'Setelah satu komentar berhasil disimpan lewat INSERT, mysqli_affected_rows($conn) bernilai...',o:['1','0','Nomor id komentar','true'],why:'Satu baris baru berarti satu baris terpengaruh. Nilai 0 atau -1 menandakan gagal.'},
+{k:'lengkapi',t:'fill',q:'Isi fungsi untuk menghitung banyaknya baris hasil SELECT.',lang:'php',code:'$result = mysqli_query($conn, "SELECT * FROM bukutamu");\n$num = ___($result);\nif ($num > 0) { /* tampilkan tabel */ }',ans:['mysqli_num_rows'],why:'mysqli_num_rows menghitung baris hasil SELECT.'}
+);
+add(12,
+{k:'pilihan',t:'mcq',q:'Pada form ubah ada kotak centang "Ceklis jika ingin mengubah foto". Tujuannya...',o:['Foto lama tetap dipakai kalau pengguna tidak memilih foto baru','Menghapus semua data siswa','Mengganti NIS','Membuat form jadi POST'],why:'Tanpa centang, proses ubah hanya mengubah data teks dan tidak menyentuh file foto.'},
+{k:'pilihan',t:'mcq',q:'Kolom nis dijadikan PRIMARY KEY pada tabel datasiswa. Artinya...',o:['Tiap siswa punya nis unik, tidak boleh ada yang kembar','Kolom nis boleh dikosongkan','Kolom nis otomatis berisi huruf','Tabel hanya boleh punya satu baris'],why:'Primary key mengenali tiap baris secara unik. Karena itu NIS dipakai di URL untuk memilih siswa yang diubah atau dihapus.'}
+);
+add(13,
+{k:'pilihan',t:'mcq',q:'Dalam OOP, method adalah...',o:['Kemampuan atau aksi yang dimiliki object','Data milik object','Nama file class','Cetak biru object'],why:'Data adalah property, aksi adalah method. Contoh: bensin adalah property, maju() adalah method.'},
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:'<?php\nclass Biodata {\n    var $nama;\n    function setnama($n) { $this->nama = $n; }\n    function getnama() { echo "Nama : ", $this->nama; }\n}\n$m = new Biodata();\n$m->setnama("Dwi");\n$m->getnama();\n?>',lang:'php',o:['Nama : Dwi','Nama : $nama','Nama :','Error'],why:'setnama mengisi property nama milik object $m, lalu getnama mencetaknya.'}
+);
+})();
+</script>
+<script>
+(function(){
+const add=(n,...qs)=>MODS[n-1].qs.push(...qs);
+add(1,
+{k:'pilihan',t:'mcq',q:'Tag HTML5 yang paling tepat untuk menandai bagian navigasi (daftar tautan menu) halaman adalah...',o:['<nav>','<div>','<span>','<menu-link>'],why:'Tag semantik seperti <nav>, <header>, <main>, dan <footer> memberi arti pada struktur halaman, membantu pembaca layar dan mesin pencari.'}
+);
+add(2,
+{k:'pilihan',t:'mcq',q:'Untuk menata beberapa elemen sejajar dalam satu baris secara fleksibel, property CSS yang dipasang pada elemen induknya adalah...',o:['display: flex;','float: center;','position: flex;','align: row;'],why:'Flexbox diaktifkan lewat display: flex pada induk. Anak-anaknya otomatis tersusun dalam satu baris.'}
+);
+add(3,
+{k:'output',t:'mcq',q:'Apa yang tampil? (PHP 7 ke atas)',code:`<?php
+$user = null;
+echo $user ?? "tamu";
+?>`,lang:'php',o:['tamu','Kosong','null','Error'],why:'Operator ?? (null coalescing) mengambil nilai di kanan jika kiri bernilai null atau belum ada.'}
+);
+add(4,
+{k:'output',t:'mcq',q:'Apa yang tampil? (match tersedia mulai PHP 8)',code:`<?php
+$n = 3;
+echo match(true) {
+    $n < 2  => "kecil",
+    $n < 5  => "sedang",
+    default => "besar",
+};
+?>`,lang:'php',o:['sedang','kecil','besar','Error'],why:'match mengembalikan nilai dari cabang pertama yang cocok. 3 < 2 salah, 3 < 5 benar, jadi hasilnya "sedang".'}
+);
+add(5,
+{k:'output',t:'mcq',q:'Apa yang tampil?',code:`<?php
+$total = 0;
+foreach ([1, 2, 3] as $x) {
+    $total += $x;
+}
+echo $total;
+?>`,lang:'php',o:['6','3','123','0'],why:'+= menambah nilai ke variabel tiap putaran: 0+1+2+3 = 6.'}
+);
+add(6,
+{k:'output',t:'mcq',q:'Apa yang tampil? (fungsi array_map dan arrow function)',code:`<?php
+$a = array_map(fn($x) => $x * 2, [1, 2, 3]);
+echo implode(",", $a);
+?>`,lang:'php',o:['2,4,6','1,2,3','2,3,4','6'],why:'array_map menerapkan fungsi ke setiap elemen dan menghasilkan array baru. implode menggabungkannya dengan koma.'}
+);
+add(7,
+{k:'pilihan',t:'mcq',q:'Data dari form akan ditampilkan kembali di halaman. Fungsi yang melindungi dari serangan XSS (script yang disisipkan) adalah...',o:['htmlspecialchars()','strlen()','trim()','count()'],why:'htmlspecialchars mengubah < dan > menjadi teks biasa, sehingga <script> yang diketik pengguna tidak dijalankan browser.'}
+);
+add(8,
+{k:'output',t:'mcq',q:'Apa yang tampil? (named arguments, PHP 8)',code:`<?php
+function tambah(int $a, int $b = 5) {
+    return $a + $b;
+}
+echo tambah(b: 1, a: 2);
+?>`,lang:'php',o:['3','7','6','Error'],why:'Dengan named arguments, urutan tidak penting. a = 2 dan b = 1, hasilnya 3.'}
+);
+add(9,
+{k:'pilihan',t:'mcq',q:'Sesudah pengguna berhasil login, fungsi yang sebaiknya dipanggil untuk mencegah pencurian session (session fixation) adalah...',o:['session_regenerate_id(true)','session_unset() saja','setcookie("id", "", 0)','header("Location: login.php")'],why:'Mengganti ID session setelah login membuat ID lama yang mungkin diketahui orang lain tidak berlaku lagi.'}
+);
+add(10,
+{k:'pilihan',t:'mcq',q:'Cara paling aman agar input pengguna tidak merusak query (SQL injection) adalah...',o:['Prepared statement dengan parameter terikat (bind)','Menyambung variabel langsung ke string SQL','Menyembunyikan nama tabel','Memakai huruf besar semua pada query'],why:'Pada prepared statement, query dan data dikirim terpisah, jadi data tidak pernah dibaca sebagai perintah SQL.'}
+);
+add(11,
+{k:'pilihan',t:'mcq',q:'Bedanya include dan require saat file yang dipanggil tidak ditemukan adalah...',o:['include hanya memberi peringatan dan lanjut, require menghentikan program','Keduanya sama persis','include menghentikan program, require hanya memberi peringatan','require hanya untuk file gambar'],why:'Untuk file penting seperti koneksi.php, require lebih aman karena program berhenti jika file hilang.'}
+);
+add(12,
+{k:'pilihan',t:'mcq',q:'Password pengguna sebaiknya disimpan di database dalam bentuk...',o:['Hasil password_hash() (hash), bukan teks asli','Teks asli agar mudah dibaca admin','Dikodekan base64','Dipotong 5 huruf pertama'],why:'Hash tidak bisa dikembalikan menjadi password asli. Saat login, cocokkan dengan password_verify().'}
+);
+add(13,
+{k:'output',t:'mcq',q:'Apa yang tampil? (constructor promotion, PHP 8)',code:`<?php
+class Mahasiswa {
+    public function __construct(public string $nama = "x") {}
+}
+echo (new Mahasiswa("Ani"))->nama;
+?>`,lang:'php',o:['Ani','x','Mahasiswa','Error'],why:'Parameter constructor yang diberi public otomatis menjadi property dan langsung terisi saat object dibuat.'}
+);
+})();
+</script>
+<script>
+window.ESO=(function(){
+/* ---- Brainfuck ---- */
+function bfRun(src,limit){
+  const code=src.replace(/[^+\-<>\[\].,]/g,''), jm={}, st=[];
+  for(let i=0;i<code.length;i++){
+    if(code[i]==='[')st.push(i);
+    else if(code[i]===']'){ if(!st.length)return{err:'Tanda ] tanpa pasangan [.',out:''}; const a=st.pop(); jm[a]=i; jm[i]=a; }
+  }
+  if(st.length)return{err:'Tanda [ tanpa pasangan ].',out:''};
+  const t=new Uint8Array(30000); let p=0,o='',n=0; limit=limit||2000000;
+  for(let i=0;i<code.length;i++){
+    if(++n>limit)return{err:'Program terlalu lama (mungkin loop tak berujung).',out:o};
+    const c=code[i];
+    if(c==='+')t[p]++; else if(c==='-')t[p]--;
+    else if(c==='>'){p++; if(p>=30000)return{err:'Pointer keluar dari pita.',out:o};}
+    else if(c==='<'){p--; if(p<0)return{err:'Pointer keluar dari pita (kiri).',out:o};}
+    else if(c==='.')o+=String.fromCharCode(t[p]);
+    else if(c==='['){ if(!t[p])i=jm[i]; }
+    else if(c===']'){ if(t[p])i=jm[i]; }
+  }
+  return{err:null,out:o};
+}
+/* ---- Whitespace (program = string dari S, T, L) ---- */
+function wsRun(src,limit){
+  const s=src.replace(/[^STL]/g,''); let i=0;
+  const ins=[], labels={};
+  const fail=m=>({err:m,out:''});
+  const num=()=>{ if(i>=s.length)throw 'Angka terpotong di akhir program.'; const sg=s[i++]==='T'?-1:1; let v=0,k=0; while(i<s.length&&s[i]!=='L'){v=v*2+(s[i]==='T'?1:0);i++;k++;} if(i>=s.length)throw 'Angka belum ditutup baris baru (L).'; i++; return sg*v; };
+  const lab=()=>{ let l=''; while(i<s.length&&s[i]!=='L'){l+=s[i++];} if(i>=s.length)throw 'Label belum ditutup baris baru (L).'; i++; return l; };
+  const nx=()=>{ if(i>=s.length)throw 'Program terpotong.'; return s[i++]; };
+  try{
+    while(i<s.length){
+      const a=nx();
+      if(a==='S'){ const b=nx(); if(b==='S')ins.push(['push',num()]); else if(b==='L'){const c=nx(); ins.push([c==='S'?'dup':c==='T'?'swap':'drop']);} else {const c=nx(); if(c==='S')ins.push(['copy',num()]); else if(c==='L')ins.push(['slide',num()]); else throw 'Perintah tumpukan tidak dikenal.';} }
+      else if(a==='T'){ const b=nx();
+        if(b==='S'){ const c=nx(), d=nx(); const m={SS:'add',ST:'sub',SL:'mul',TS:'div',TT:'mod'}[c+d]; if(!m)throw 'Perintah aritmetika tidak dikenal.'; ins.push([m]); }
+        else if(b==='T'){ const c=nx(); if(c==='S')ins.push(['store']); else if(c==='T')ins.push(['load']); else throw 'Perintah heap tidak dikenal.'; }
+        else { const c=nx(), d=nx(); const m={SS:'outc',ST:'outn',TS:'inc',TT:'inn'}[c+d]; if(!m)throw 'Perintah I/O tidak dikenal.'; ins.push([m]); } }
+      else { const b=nx(), c=nx(); const k=b+c;
+        if(k==='SS'){ labels[lab()]=ins.length; }
+        else if(k==='ST')ins.push(['call',lab()]); else if(k==='SL')ins.push(['jmp',lab()]);
+        else if(k==='TS')ins.push(['jz',lab()]); else if(k==='TT')ins.push(['jn',lab()]);
+        else if(k==='TL')ins.push(['ret']); else if(k==='LL')ins.push(['end']); else throw 'Perintah aliran tidak dikenal.'; }
+    }
+  }catch(e){ return fail(typeof e==='string'?e:'Program tidak valid.'); }
+  const st=[], heap={}, cs=[]; let pc=0,o='',n=0; limit=limit||500000;
+  const pop=()=>{ if(!st.length)throw 'Tumpukan kosong saat mengambil nilai.'; return st.pop(); };
+  const jump=l=>{ if(!(l in labels))throw 'Label tidak ditemukan.'; pc=labels[l]; };
+  try{
+    while(pc<ins.length){
+      if(++n>limit)return{err:'Program terlalu lama.',out:o};
+      const [op,arg]=ins[pc++];
+      if(op==='push')st.push(arg); else if(op==='dup'){const v=pop();st.push(v,v);} else if(op==='swap'){const b=pop(),a=pop();st.push(b,a);} else if(op==='drop')pop();
+      else if(op==='copy'){ if(arg<0||arg>=st.length)throw 'Salin di luar tumpukan.'; st.push(st[st.length-1-arg]); }
+      else if(op==='slide'){ const top=pop(); const k=Math.min(Math.max(arg,0),st.length); st.length-=k; st.push(top); }
+      else if(op==='add'||op==='sub'||op==='mul'||op==='div'||op==='mod'){ const b=pop(),a=pop();
+        if((op==='div'||op==='mod')&&b===0)throw 'Pembagian dengan nol.';
+        st.push(op==='add'?a+b:op==='sub'?a-b:op==='mul'?a*b:op==='div'?Math.floor(a/b):((a%b)+b)%b); }
+      else if(op==='store'){ const v=pop(),a=pop(); heap[a]=v; } else if(op==='load'){ const a=pop(); st.push(heap[a]||0); }
+      else if(op==='outc')o+=String.fromCharCode(pop()); else if(op==='outn')o+=String(pop());
+      else if(op==='inc'||op==='inn'){ pop(); }
+      else if(op==='call'){ cs.push(pc); jump(arg); } else if(op==='jmp')jump(arg);
+      else if(op==='jz'){ if(pop()===0)jump(arg); } else if(op==='jn'){ if(pop()<0)jump(arg); }
+      else if(op==='ret'){ if(!cs.length)throw 'Return tanpa call.'; pc=cs.pop(); }
+      else if(op==='end')return{err:null,out:o};
+    }
+  }catch(e){ return{err:typeof e==='string'?e:'Kesalahan saat berjalan.',out:o}; }
+  return{err:'Program berakhir tanpa perintah akhir (L L L).',out:o};
+}
+function wsNum(n){ let b=Math.abs(n).toString(2).replace(/1/g,'T').replace(/0/g,'S'); return (n<0?'T':'S')+b+'L'; }
+function wsGen(text){ let p=''; for(const ch of text)p+='SS'+wsNum(ch.charCodeAt(0))+'TLSS'; return p+'LLL'; }
+/* ---- Piet ---- */
+const HEX=[['#ffc0c0','#ffffc0','#c0ffc0','#c0ffff','#c0c0ff','#ffc0ff'],['#ff0000','#ffff00','#00ff00','#00ffff','#0000ff','#ff00ff'],['#c00000','#c0c000','#00c000','#00c0c0','#0000c0','#c000c0']];
+const WHITE=18, BLACK=19;
+function pcolor(c){ return c===WHITE?'#ffffff':c===BLACK?'#000000':HEX[Math.floor(c/6)][c%6]; }
+function pietRun(g,W,H,limit){
+  const dx=[1,0,-1,0], dy=[0,1,0,-1];
+  const get=(x,y)=>(x<0||y<0||x>=W||y>=H)?BLACK:(g[y*W+x]===undefined||g[y*W+x]===255?WHITE:g[y*W+x]);
+  let x=0,y=0,dp=0,cc=0,att=0,n=0,o='',why='Program berhenti (tidak bisa bergerak lagi).'; const st=[]; limit=limit||100000;
+  while(++n<limit){
+    const c=get(x,y);
+    if(c===WHITE){
+      const nx=x+dx[dp], ny=y+dy[dp];
+      if(get(nx,ny)!==BLACK){x=nx;y=ny;att=0;continue;}
+      if(++att>=8)break; if(att%2===1)cc^=1; else dp=(dp+1)%4; continue;
+    }
+    const seen=new Set([y*W+x]), q=[[x,y]], blk=[];
+    while(q.length){ const [a,b]=q.pop(); blk.push([a,b]); for(let d=0;d<4;d++){ const u=a+dx[d],v=b+dy[d]; if(get(u,v)===c&&!seen.has(v*W+u)){seen.add(v*W+u);q.push([u,v]);} } }
+    const side=(dp+(cc===0?3:1))%4;
+    let best=null;
+    for(const p of blk){
+      if(!best){best=p;continue;}
+      const a=p[0]*dx[dp]+p[1]*dy[dp], b=best[0]*dx[dp]+best[1]*dy[dp];
+      if(a>b||(a===b&&p[0]*dx[side]+p[1]*dy[side]>best[0]*dx[side]+best[1]*dy[side]))best=p;
+    }
+    const nx=best[0]+dx[dp], ny=best[1]+dy[dp], nc=get(nx,ny);
+    if(nc===BLACK){ if(++att>=8)break; if(att%2===1)cc^=1; else dp=(dp+1)%4; continue; }
+    att=0;
+    if(nc!==WHITE){
+      const h=((nc%6)-(c%6)+6)%6, l=((Math.floor(nc/6))-(Math.floor(c/6))+3)%3, k=h*3+l, sz=blk.length;
+      const need=m=>st.length>=m;
+      if(k===1)st.push(sz);
+      else if(k===2&&need(1))st.pop();
+      else if(k>=3&&k<=5&&need(2)){ const b=st.pop(),a=st.pop(); st.push(k===3?a+b:k===4?a-b:a*b); }
+      else if(k>=6&&k<=8){
+        if(k===8){ if(need(1)){const v=st.pop();st.push(v?0:1);} }
+        else if(need(2)){ const b=st.pop(),a=st.pop(); if(b===0){st.push(a,b);} else st.push(k===6?Math.trunc(a/b):((a%b)+b)%b); }
+      }
+      else if(k===9&&need(2)){ const b=st.pop(),a=st.pop(); st.push(a>b?1:0); }
+      else if(k===10&&need(1)){ const v=st.pop(); dp=((dp+v)%4+4)%4; }
+      else if(k===11&&need(1)){ const v=st.pop(); if(Math.abs(v)%2)cc^=1; }
+      else if(k===12&&need(1)){ const v=st.pop(); st.push(v,v); }
+      else if(k===13&&need(2)){ const r=st.pop(), d=st.pop(); if(d>=0&&d<=st.length&&d>0){ const part=st.splice(st.length-d,d); const s=((r%d)+d)%d; for(let t=0;t<s;t++)part.unshift(part.pop()); st.push(...part); } else if(d<0){st.push(d,r);} }
+      else if(k===14){ st.push(0); }
+      else if(k===15){ st.push(0); }
+      else if(k===16&&need(1))o+=String(st.pop());
+      else if(k===17&&need(1)){ const v=st.pop(); o+=String.fromCharCode(v); }
+    }
+    x=nx;y=ny;
+  }
+  return{err:null,out:o,note:why};
+}
+function pietGen(text){
+  const H=12, items=[]; for(const ch of text)items.push(ch.charCodeAt(0));
+  let c=6, col=0, width=0, hmax=1; const cells={};
+  const put=(x,y,v)=>{cells[y*400+x]=v; width=Math.max(width,x+1);};
+  const push=v=>((Math.floor(v/6)+1)%3)*6+(v%6), outc=v=>((Math.floor(v/6)+2)%3)*6+((v%6)+5)%6;
+  items.forEach((n,idx)=>{
+    const last=idx===items.length-1, w=Math.ceil(n/(H-1)), hh=Math.floor(n/w), r=n-w*hh;
+    for(let yy=0;yy<hh;yy++)for(let xx=0;xx<w;xx++){ if(last&&yy===0&&xx===w-1)continue; put(col+xx,yy,c); }
+    const ex=last?r+1:r;
+    for(let xx=0;xx<ex;xx++)put(col+xx,hh,c);
+    hmax=Math.max(hmax,hh+(ex?1:0)); col+=w;
+    const p=push(c);
+    if(!last){ put(col,0,p); col++; c=outc(p); }
+    else{
+      put(col,1,p); put(col,0,19); put(col,2,19);
+      const f=outc(p);
+      for(let yy=0;yy<3;yy++){ put(col+1,yy,f); put(col+2,yy,19); }
+      put(col+1,3,19); hmax=Math.max(hmax,4);
+    }
+  });
+  return{cells,width,height:Math.max(hmax,1)};
+}
+return{bfRun,wsRun,wsGen,wsNum,pietRun,pietGen,pcolor,WHITE,BLACK};
+})();
+
+</script>
+<style>
+.ap{display:block;overflow:visible}
+.ap .ink{fill:var(--mline)}
+.ap .ln{fill:none;stroke:var(--mline);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ap .body{fill:var(--apple);stroke:var(--mline);stroke-width:3;stroke-linejoin:round}
+.ap .leaf{fill:var(--leaf);stroke:var(--mline);stroke-width:3;stroke-linejoin:round}
+.ap .q{fill:var(--amber-ink)}
+.logo-wrap{position:relative;display:inline-block;flex:none}
+#logo{position:relative;z-index:1;display:block}
+#evil{position:absolute;z-index:0;left:15px;top:16px;width:30px;height:30px;border:0;border-radius:50%;background:#3a0d0a;cursor:pointer;padding:0;display:grid;place-items:center;transition:transform .3s;pointer-events:none}
+.logo-wrap #logo{cursor:pointer;transition:transform .45s cubic-bezier(.5,-.4,.5,1.4),opacity .35s}
+.logo-wrap.open #logo{transform:translateY(-36px) rotate(-25deg) scale(.5);opacity:0;pointer-events:none}
+.logo-wrap.open #evil{pointer-events:auto;transform:scale(1.7);animation:pulse 1s infinite alternate}
+.logo-wrap.open #evil:hover,.logo-wrap.open #evil:focus-visible{transform:scale(2)}
+#logo.shake{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-5px) rotate(-8deg)}75%{transform:translateX(5px) rotate(8deg)}}
+@keyframes pulse{to{box-shadow:0 0 16px #ff3b1f}}
+@media (prefers-reduced-motion:reduce){#logo.shake,.logo-wrap.open #evil{animation:none}}
+html.hell.hell.hell{--bg:#1a0504;--grid:rgba(255,90,20,.11);--surface:#2a0a08;--surface2:#3a100c;--ink:#ffe9d6;--soft:#f0b08c;--line:#7a1f12;--apple:#ff3b1f;--apple-deep:#ff9a5c;--on-apple:#1a0504;--leaf:#ffb020;--leaf-soft:#3a2408;--bad:#ff6a4a;--bad-soft:#4a120c;--hint:#3a2408;--hint-ink:#ffd37a;--mline:#1a0504;color-scheme:dark}
+html.hell body{background:radial-gradient(ellipse at 50% 120%,#7a1400 0,#1a0504 60%)}
+.hellbox{border-color:#ff3b1f;animation:flick 2.4s ease-in-out infinite alternate}
+@keyframes flick{from{box-shadow:0 0 14px rgba(255,59,31,.35)}to{box-shadow:0 0 30px rgba(255,120,20,.6)}}
+.hellbox h2{font-size:1.9rem;font-weight:800;color:#ffb020}
+.hellbox .bubble{border-color:#ff3b1f}
+#fx i.em{top:auto;bottom:-12px;width:6px;height:6px;border-radius:50%;background:#ff7a1f;box-shadow:0 0 8px #ff5a1f;animation:rise 3.2s ease-in infinite}
+@keyframes rise{from{transform:translateY(0);opacity:1}to{transform:translateY(-105vh) translateX(30px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.hellbox{animation:none}}
+.bfsrc{width:100%;min-height:150px;font-family:var(--f-mono);font-size:.9rem;background:var(--code-bg);color:var(--code-fg);border:1px solid var(--code-line);border-radius:10px;padding:10px;resize:vertical;margin:8px 0}
+.hout{background:var(--code-bg);color:var(--code-fg);border:1px solid var(--code-line);border-radius:10px;padding:10px;min-height:3em;white-space:pre-wrap;word-break:break-all;margin:10px 0;font-family:var(--f-mono);font-size:.9rem}
+.wsview{background:var(--code-bg);color:var(--code-fg);border:1px solid var(--code-line);border-radius:10px;padding:10px;min-height:110px;max-height:240px;overflow:auto;font-family:var(--f-mono);line-height:1.5;margin:8px 0;word-break:break-all}
+.wsview .s{color:#7fd4ff}.wsview .t{color:#ffb86b}.wsview .l{color:#ff8a98}.wsview .ph{opacity:.6}
+.toolrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.toolrow label{display:flex;align-items:center;gap:6px}
+.wsnum{width:5em;font:inherit;padding:5px 8px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.sw{width:30px;height:30px;border:2px solid var(--line);border-radius:6px;padding:0;cursor:pointer}
+.sw[aria-pressed="true"]{outline:3px solid var(--apple);outline-offset:1px}
+[data-act="ptool"][aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.pietwrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:100%}
+canvas.piet{display:block}
+
+
+</style>
+<script>
+(function(){
+const KEY='apeli-php-v1';
+let S={ok:{}};
+try{const r=localStorage.getItem(KEY); if(r){const p=JSON.parse(r); if(p&&p.ok)S=p;}}catch(e){}
+S.badge=S.badge||{};S.exam=S.exam||{best:0,n:0};
+const W={}, R={}, WF={};
+let cloudPush=()=>{};
+function save(){S.t=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}cloudPush();}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+/* ---------- Maskot Apeli ---------- */
+function apel(mood,size){
+  const dots='<circle class="ink" cx="46" cy="62" r="5"/><circle class="ink" cx="74" cy="62" r="5"/><circle fill="#fff" cx="47.6" cy="60.2" r="1.7"/><circle fill="#fff" cx="75.6" cy="60.2" r="1.7"/>';
+  const spark='<path fill="#ffc93c" stroke="#3b1820" stroke-width="1.5" stroke-linejoin="round" d="M106 14 l2.5 7 7 2.5 -7 2.5 -2.5 7 -2.5 -7 -7 -2.5 7 -2.5z"/><path fill="#ffc93c" stroke="#3b1820" stroke-width="1.5" stroke-linejoin="round" d="M12 30 l2 5.5 5.5 2 -5.5 2 -2 5.5 -2 -5.5 -5.5 -2 5.5 -2z"/>';
+  const M={
+    happy:dots+'<path class="ln" d="M50 76 Q60 87 70 76"/>',
+    cheer:'<path class="ln" d="M40 65 Q46 56 52 65"/><path class="ln" d="M68 65 Q74 56 80 65"/><path class="ink" d="M47 74 Q60 95 73 74 Z"/><path fill="#ff8a8a" d="M54 84 Q60 91 66 84 Q60 80 54 84Z"/>'+spark,
+    wow:'<circle class="ink" cx="46" cy="61" r="6.5"/><circle class="ink" cx="74" cy="61" r="6.5"/><circle fill="#fff" cx="48" cy="58.8" r="2.2"/><circle fill="#fff" cx="76" cy="58.8" r="2.2"/><ellipse class="ink" cx="60" cy="82" rx="6" ry="8"/>',
+    think:dots+'<path class="ln" d="M64 51 Q73 45 82 51"/><path class="ln" d="M53 81 Q60 76 68 80"/><text class="q" x="92" y="32" font-family="Baloo 2,sans-serif" font-weight="800" font-size="30">?</text>',
+    oops:'<path class="ln" d="M38 52 L53 57"/><path class="ln" d="M82 52 L67 57"/><circle class="ink" cx="46" cy="64" r="4.5"/><circle class="ink" cx="74" cy="64" r="4.5"/><path class="ln" d="M48 83 Q54 76 60 83 T72 83"/><path fill="#6ec1f0" stroke="#3b1820" stroke-width="2.5" d="M98 42 Q105 53 98 60 Q91 53 98 42Z"/>'
+  };
+  const h=Math.round(size*124/120);
+  return '<svg class="ap" viewBox="0 0 120 124" width="'+size+'" height="'+h+'" aria-hidden="true" focusable="false">'
+   +'<ellipse class="ink" cx="46" cy="115" rx="8" ry="4"/><ellipse class="ink" cx="74" cy="115" rx="8" ry="4"/>'
+   +'<path class="body" d="M60 38 C50 28 26 30 22 56 C18 82 34 107 50 107 C55 107 57 105 60 105 C63 105 65 107 70 107 C86 107 102 82 98 56 C94 30 70 28 60 38 Z"/>'
+   +'<path d="M31 52 Q33 42 41 38" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>'
+   +'<path d="M60 38 Q59 25 66 14" fill="none" stroke="#6b3f2a" stroke-width="5" stroke-linecap="round"/>'
+   +'<path class="leaf" d="M64 25 C70 11 88 9 94 15 C90 29 74 33 64 25Z"/>'
+   +'<path d="M68 24 Q80 19 90 16" fill="none" stroke="#3b1820" stroke-width="1.6" stroke-linecap="round"/>'
+   +'<ellipse cx="34" cy="75" rx="7" ry="4.5" fill="#ff9a8f" opacity=".7"/><ellipse cx="86" cy="75" rx="7" ry="4.5" fill="#ff9a8f" opacity=".7"/>'
+   +(M[mood]||M.happy)+'</svg>';
+}
+
+/* ---------- Penyorot kode ---------- */
+const KWPHP='function|if|else|elseif|while|for|foreach|do|switch|case|break|echo|return|class|new|isset|include|require|define|exit|die|public|private|var|as|and|or|xor|null|true|false';
+const KWSQL='SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|DATABASE|TABLE|USE|PRIMARY|KEY|AUTO_INCREMENT|NOT|NULL|INT|VARCHAR|TEXT|UNIQUE|ORDER|BY|FORM';
+const RES={
+  php:{re:new RegExp('(^--[^\\n]*|//[^\\n]*|#[^\\n]*|/\\*[\\s\\S]*?\\*/)|("(?:[^"\\n]|\\\\.)*"|\'(?:[^\'\\n]|\\\\.)*\')|(\\$\\w+)|(<\\?php|<\\?=|\\?>)|(\\b(?:'+KWPHP+')\\b)|(\\b\\d+(?:\\.\\d+)?\\b)','gm'),cls:['t-com','t-str','t-var','t-kw','t-kw','t-num']},
+  sql:{re:new RegExp('(--[^\\n]*)|(\'(?:[^\'\\n]|\\\\.)*\')|\\b('+KWSQL+')\\b|(\\b\\d+\\b)','gi'),cls:['t-com','t-str','t-kw','t-num']},
+  html:{re:/(<\/?[a-zA-Z!][^>]*>)|(&\w+;)/g,cls:['t-tag','t-num']},
+  css:{re:/(\/\*[\s\S]*?\*\/)|(#[0-9a-fA-F]{3,6}\b|\b\d+(?:\.\d+)?(?:px|%|em)?)|(\b(?:solid|none|auto|center|relative|absolute|fixed|collapse)\b)/g,cls:['t-com','t-num','t-kw']}
+};
+function hl(src,lang){
+  const d=RES[lang]; let out='';
+  if(!d){out=esc(src);}
+  else{
+    const re=d.re; re.lastIndex=0; let last=0,m;
+    while((m=re.exec(src))){
+      if(m[0]===''){re.lastIndex++;continue;}
+      out+=esc(src.slice(last,m.index));
+      let gi=1; while(gi<m.length&&m[gi]===undefined)gi++;
+      out+='<span class="'+d.cls[gi-1]+'">'+esc(m[0])+'</span>';
+      last=m.index+m[0].length;
+    }
+    out+=esc(src.slice(last));
+  }
+  return out.replace(/___/g,'<span class="blank">&nbsp;&nbsp;?&nbsp;&nbsp;</span>');
+}
+function codeBlock(fn,lang,src,copy){
+  return '<div class="code"><div class="bar2"><b>'+esc(fn||'')+'</b><span>'+(lang||'').toUpperCase()+(copy?' <button type="button" data-act="copy">Salin</button>':'')+'</span></div><pre><code>'+hl(src,lang)+'</code></pre></div>';
+}
+
+/* ---------- Pengacak tetap ---------- */
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function order(id,n){
+  let s=hash(id)||1; const a=[...Array(n).keys()];
+  const rnd=()=>{s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};
+  for(let i=n-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+const TAG={pilihan:'Pilihan ganda',output:'Tebak output',bug:'Cari bug',lengkapi:'Lengkapi kode'};
+const norm=s=>String(s).trim().replace(/\s+/g,' ').toLowerCase();
+
+/* ---------- Soal ---------- */
+function fbHtml(kind,body,mood,extra){
+  return '<div class="fb '+kind+' show" role="status"><span class="m">'+apel(mood,44)+'</span><div class="t">'+body+(extra||'')+'</div></div>';
+}
+function qHtml(m,i){
+  const q=m.qs[i-1], id='m'+m.n+'q'+i, ok=!!S.ok[id], rv=!!R[id];
+  let h='<div class="q'+(ok?' ok':'')+'" id="'+id+'" tabindex="-1"><div class="qh"><span class="n">'+i+'</span><div style="min-width:0;flex:1">';
+  h+='<span class="tag">'+TAG[q.k]+'</span><p class="qt">'+esc(q.q)+'</p>';
+  if(q.code&&q.t==='mcq')h+=codeBlock('',q.lang,q.code,false);
+  if(q.t==='mcq'){
+    const ord=order(id,q.o.length), wr=W[id]||[];
+    h+='<ul class="opts">';
+    ord.forEach((oi,pos)=>{
+      let c='',dis=ok||rv;
+      if((ok||rv)&&oi===0)c='right'; else if(wr.indexOf(oi)>=0){c='wrong';dis=true;}
+      h+='<li><button type="button" class="'+c+'" data-act="pick" data-q="'+id+'" data-o="'+oi+'"'+(dis?' disabled':'')+'><span class="k">'+'ABCD'[pos]+'</span><span class="tx">'+esc(q.o[oi])+'</span></button></li>';
+    });
+    h+='</ul>';
+    if(ok)h+=fbHtml('good','<b>Tepat!</b> '+esc(q.why),'cheer');
+    else if(rv)h+=fbHtml('','<b>Jawabannya:</b> '+esc(q.o[0])+'. '+esc(q.why),'think');
+    else if(wr.length)h+=fbHtml('bad','<b>Belum tepat.</b> Coba pilih yang lain.','oops','<div class="acts"><button type="button" class="btn ghost" data-act="reveal" data-q="'+id+'">Lihat jawaban</button></div>');
+  }else{
+    h+=codeBlock('',q.lang,q.code,false);
+    const val=ok?(S.fill&&S.fill[id]||q.ans[0]):(WF[id]||'');
+    h+='<div class="fillrow"><input type="text" id="'+id+'-in" aria-label="Jawaban soal '+i+'" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+esc(val)+'"'+(ok?' readonly':'')+'>'+(ok?'':'<button type="button" class="btn" data-act="check" data-q="'+id+'">Cek</button>')+'</div>';
+    if(ok)h+=fbHtml('good','<b>Tepat!</b> '+esc(q.why),'cheer');
+    else if(rv)h+=fbHtml('','<b>Jawabannya:</b> <code>'+esc(q.ans[0])+'</code>. '+esc(q.why),'think');
+    else if(WF[id]!==undefined&&WF[id]!=='')h+=fbHtml('bad','<b>Belum tepat.</b> Periksa lagi ejaannya.','oops','<div class="acts"><button type="button" class="btn ghost" data-act="reveal" data-q="'+id+'">Lihat jawaban</button></div>');
+  }
+  return h+'</div></div></div>';
+}
+
+/* ---------- Statistik ---------- */
+function modStat(m){let d=0;for(let i=1;i<=m.qs.length;i++)if(S.ok['m'+m.n+'q'+i])d++;if(S.ok['m'+m.n+'t'])d++;return{d:d,t:m.qs.length+1};}
+function allStat(){let d=0,t=0;MODS.forEach(m=>{const s=modStat(m);d+=s.d;t+=s.t;});return{d:d,t:t};}
+let cur=1, booted=false, streak=0;
+function renderNav(center){
+  const list=document.getElementById('navlist'), prev=list.scrollLeft;
+  list.innerHTML='<a href="#beranda"'+(cur==='home'?' aria-current="page"':'')+'><span class="ico">'+apel('happy',20)+'</span><span>Beranda</span></a>'
+  +MODS.map(m=>{
+    const s=modStat(m);
+    return '<a href="#m'+m.n+'"'+(m.n===cur?' aria-current="page"':'')+(s.d===s.t?' class="done"':'')+'><span class="no">'+m.rom+'</span><span>'+esc(m.title)+'</span><span class="ct">'+s.d+'/'+s.t+'</span></a>';
+  }).join('')
+  +'<a href="#ujian"'+(cur==='exam'?' aria-current="page"':'')+'><span class="no">UA</span><span>Ujian Akhir</span></a>';
+  list.scrollLeft=prev;
+  const a=list.querySelector('a[aria-current]');
+  if(center&&a&&list.scrollWidth>list.clientWidth){list.scrollLeft=a.getBoundingClientRect().left-list.getBoundingClientRect().left+list.scrollLeft-(list.clientWidth-a.offsetWidth)/2;}
+}
+function updateProgress(center){
+  const s=allStat();
+  document.getElementById('pcount').textContent=s.d+' / '+s.t;
+  document.getElementById('pbar').style.width=(s.t?Math.round(s.d/s.t*100):0)+'%';
+  meterInfo();checkBadges();
+  renderNav(center);
+}
+
+/* ---------- Modul ---------- */
+function taskHtml(m){
+  const id='m'+m.n+'t', t=m.task;
+  return '<section class="panel task"><h2 class="sec">Tugas Praktik <small>dikerjakan di komputer</small></h2><h3>'+esc(t.title)+'</h3><p>'+esc(t.brief)+'</p>'
+   +'<details><summary>Petunjuk</summary><div class="in"><p class="hintbox">'+esc(t.hint)+'</p></div></details>'
+   +'<details><summary>Kunci jawaban (coba kerjakan dulu, ya)</summary><div class="in">'+codeBlock(t.fn,t.lang,t.sol,true)+'<p>'+esc(t.note)+'</p></div></details>'
+   +'<label class="donerow"><input type="checkbox" data-act="task" data-q="'+id+'"'+(S.ok[id]?' checked':'')+'> Sudah aku kerjakan</label></section>';
+}
+function show(n){
+  cur=n; const m=MODS[n-1], s=modStat(m);
+  const mood=s.d===s.t?'cheer':(s.d>0?'wow':'happy');
+  let h='<section class="panel"><div class="mhead"><span aria-hidden="true">'+apel(mood,112)+'</span><div class="txt"><p class="eyebrow">Modul '+m.rom+' · Pertemuan '+esc(m.pert)+'</p><h2>'+esc(m.title)+'</h2><div class="bubble">'+esc(m.intro)+'</div></div></div></section>';
+  h+='<section class="panel"><h2 class="sec">Rangkuman</h2><ul class="points">'+m.points.map(p=>'<li><b>'+esc(p[0])+'</b>'+esc(p[1])+'</li>').join('')+'</ul>'+codeBlock(m.code.fn,m.code.lang,m.code.src,true)+'</section>';
+  h+='<section class="panel"><h2 class="sec">Latihan Soal <small>'+m.qs.length+' soal</small></h2>';
+  for(let i=1;i<=m.qs.length;i++)h+=qHtml(m,i);
+  h+='</section>'+taskHtml(m);
+  h+='<div class="again"><button type="button" class="btn ghost sm" data-act="mreset" data-n="'+n+'">Ulangi modul ini</button></div>';
+  const pv=MODS[n-2], nx=MODS[n];
+  h+='<div class="pager">'+(pv?'<a class="btn ghost" href="#m'+pv.n+'" style="text-decoration:none">← Modul '+pv.rom+': '+esc(pv.title)+'</a>':'<span></span>')+(nx?'<a class="btn" href="#m'+nx.n+'" style="text-decoration:none">Modul '+nx.rom+': '+esc(nx.title)+' →</a>':'')+'</div>';
+  document.getElementById('main').innerHTML=h;
+  updateProgress(true);
+}
+function route(first){
+  stopTimer();
+  docEl.classList.toggle('hell',location.hash==='#neraka');
+  if(location.hash!=='#neraka')document.getElementById('fx').innerHTML='';
+  const r=/^#m(\d{1,2})$/.exec(location.hash), n=r?+r[1]:0;
+  if(location.hash==='#neraka')showHell();
+  else if(location.hash==='#ujian')showExam();
+  else if(n>=1&&n<=MODS.length)show(n);
+  else showHome();
+  if(!first){window.scrollTo(0,0);try{document.getElementById('main').focus({preventScroll:true});}catch(e){}}
+}
+
+/* ---------- Interaksi ---------- */
+function redraw(id){
+  const mm=/^m(\d+)q(\d+)$/.exec(id), m=MODS[+mm[1]-1], el=document.getElementById(id);
+  el.outerHTML=qHtml(m,+mm[2]);
+  const ne=document.getElementById(id); if(ne)ne.focus({preventScroll:true});
+  updateProgress();
+}
+function copyCode(btn){
+  const pre=btn.closest('.code').querySelector('pre'), txt=pre.innerText;
+  const fallback=()=>{try{const r=document.createRange();r.selectNodeContents(pre);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);btn.textContent='Teks terpilih';}catch(e){}};
+  try{navigator.clipboard.writeText(txt).then(()=>{btn.textContent='Tersalin';setTimeout(()=>btn.textContent='Salin',1600);},fallback);}catch(e){fallback();}
+}
+const main=document.getElementById('main');
+main.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]'); if(!b)return;
+  const act=b.dataset.act, id=b.dataset.q;
+  if(act==='copy'){copyCode(b);return;}
+  if(examClick(act,b))return;
+  if(hellClick(act,b))return;
+  if(act==='pick'){
+    if(S.ok[id])return; const o=+b.dataset.o;
+    if(o===0){if(!(W[id]&&W[id].length))streak++;else streak=0;S.ok[id]=1;save();}else{streak=0;(W[id]=W[id]||[]).push(o);}
+    redraw(id);
+  }else if(act==='reveal'){R[id]=1;redraw(id);}
+  else if(act==='check'){checkFill(id);}
+  else if(act==='mreset'){resetModule(+b.dataset.n,b);}
+});
+main.addEventListener('change',e=>{
+  const b=e.target.closest('[data-act="task"]'); if(!b)return;
+  if(b.checked)S.ok[b.dataset.q]=1;else delete S.ok[b.dataset.q];
+  save();updateProgress();
+});
+main.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.matches('.fillrow input:not(.xfill)')&&!e.target.readOnly){e.preventDefault();checkFill(e.target.id.replace('-in',''));}
+});
+function checkFill(id){
+  const mm=/^m(\d+)q(\d+)$/.exec(id), q=MODS[+mm[1]-1].qs[+mm[2]-1];
+  const v=document.getElementById(id+'-in').value;
+  if(q.ans.some(a=>norm(a)===norm(v))){if(WF[id]===undefined)streak++;else streak=0;S.ok[id]=1;(S.fill=S.fill||{})[id]=v.trim();save();}
+  else{streak=0;WF[id]=v.trim()||' ';}
+  redraw(id);
+}
+let rt=null;
+document.getElementById('reset').addEventListener('click',function(){
+  const b=this;
+  if(rt){clearTimeout(rt);rt=null;S={ok:{},badge:{},exam:{best:0,n:0}};save();streak=0;EX=null;HL=null;for(const k in W)delete W[k];for(const k in R)delete R[k];for(const k in WF)delete WF[k];b.textContent='Reset progres';route(true);return;}
+  b.textContent='Yakin? Klik sekali lagi';
+  rt=setTimeout(()=>{rt=null;b.textContent='Reset progres';},4000);
+});
+/* ---------- XP, level, lencana ---------- */
+const XPQ=10, XPT=25;
+function xpOf(){let x=0;for(const k in S.ok)if(S.ok[k])x+=/t$/.test(k)?XPT:XPQ;return x;}
+function xpMax(){let x=0;MODS.forEach(m=>{x+=m.qs.length*XPQ+XPT;});return x;}
+const LV=[['Biji Apel',0],['Tunas Muda',.1],['Pohon Kecil',.3],['Pohon Berbuah',.55],['Petani Apel',.8],['Raja Kebun',1]];
+function level(){const r=xpOf()/xpMax();let i=0;LV.forEach((l,k)=>{if(r>=l[1])i=k;});return{i:i,name:LV[i][0],next:LV[i+1]};}
+function meterInfo(){
+  const L=level(), x=xpOf(), mx=xpMax();
+  document.getElementById('lvname').textContent='Level '+(L.i+1)+' · '+L.name;
+  let t=x+' XP';
+  if(L.next)t+=' · '+(Math.ceil(L.next[1]*mx)-x)+' XP lagi ke '+L.next[0];
+  document.getElementById('xpinfo').textContent=t;
+  document.getElementById('streak').innerHTML=streak>=2?'<span class="chip">Beruntun '+streak+'x</span>':'';
+}
+function miniApple(p,id,size){
+  const y=46-Math.round(46*p), d='M20 12C14 8 5 11 5 24c0 11 7 19 12 19 2 0 2-1 3-1s1 1 3 1c5 0 12-8 12-19 0-13-9-16-15-12z';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 40 46" aria-hidden="true"><defs><clipPath id="cp'+id+'"><rect x="0" y="'+y+'" width="40" height="46"/></clipPath></defs>'
+   +'<path d="'+d+'" style="fill:var(--surface2);stroke:var(--apple);stroke-width:2"/>'
+   +'<path d="'+d+'" style="fill:var(--apple)" clip-path="url(#cp'+id+')"/>'
+   +'<path d="M20 12c0-4 2-7 5-8" style="fill:none;stroke:var(--leaf);stroke-width:2.5;stroke-linecap:round"/>'
+   +(p>=1?'<circle cx="14" cy="26" r="1.8" fill="#fff"/><circle cx="26" cy="26" r="1.8" fill="#fff"/><path d="M15 32q5 4 10 0" style="fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round"/>':'')+'</svg>';
+}
+let tt=null;
+function toast(html,mood){
+  const t=document.getElementById('toast');
+  t.innerHTML='<div class="tb" role="status"><span aria-hidden="true">'+apel(mood||'cheer',40)+'</span><div>'+html+'</div></div>';
+  clearTimeout(tt);tt=setTimeout(()=>{t.innerHTML='';},4200);
+}
+function confetti(){
+  try{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;}catch(e){}
+  let h='';for(let i=0;i<22;i++)h+='<i style="left:'+Math.round(Math.random()*96)+'%;animation-delay:'+(Math.random()*.6).toFixed(2)+'s"></i>';
+  const f=document.getElementById('fx');f.innerHTML=h;setTimeout(()=>{f.innerHTML='';},3200);
+}
+const BG=[
+  ['hell','Penakluk Neraka','Menjawab 15 dari 15 soal esolang Mr. Pisang Iblis.',()=>(S.hell||0)>=15],
+  ['first','Langkah Pertama','Menjawab soal pertamamu.',()=>Object.keys(S.ok).length>=1],
+  ['half','Separuh Jalan','Menyelesaikan setengah dari semua latihan.',()=>{const s=allStat();return s.d*2>=s.t;}],
+  ['streak','Beruntun 5','Lima jawaban benar berturut-turut pada percobaan pertama.',()=>streak>=5],
+  ['exam','Lulus Ujian','Skor Ujian Akhir 80 atau lebih.',()=>S.exam.best>=80],
+  ['all','Panen Raya','Menyelesaikan semua latihan dan tugas.',()=>{const s=allStat();return s.d===s.t;}]
+].concat(MODS.map(m=>['m'+m.n,'Modul '+m.rom,'Menyelesaikan semua soal dan tugas Modul '+m.rom+'.',()=>{const s=modStat(m);return s.d===s.t;}]));
+function checkBadges(){
+  let nw=null;
+  BG.forEach(b=>{if(!S.badge[b[0]]&&b[3]()){S.badge[b[0]]=1;nw=b;}});
+  if(nw){save();if(booted){toast('<b>Lencana baru: '+esc(nw[1])+'</b><br>'+esc(nw[2]),'cheer');confetti();}}
+}
+
+/* ---------- Tema ---------- */
+const TK='apeli-theme', docEl=document.documentElement;
+function effTheme(){const a=docEl.getAttribute('data-theme');if(a)return a;try{return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}catch(e){return 'light';}}
+function updateThemeBtn(){document.getElementById('theme').textContent=effTheme()==='dark'?'Mode terang':'Mode gelap';}
+try{const t=localStorage.getItem(TK);if(t==='dark'||t==='light')docEl.setAttribute('data-theme',t);}catch(e){}
+document.getElementById('theme').addEventListener('click',()=>{
+  const t=effTheme()==='dark'?'light':'dark';docEl.setAttribute('data-theme',t);
+  try{localStorage.setItem(TK,t);}catch(e){}updateThemeBtn();
+});
+updateThemeBtn();
+
+/* ---------- Beranda ---------- */
+const PH=[['Fondasi Web','Modul I–II',[1,2]],['Dasar PHP','Modul III–VI',[3,4,5,6]],['PHP Interaktif','Modul VII–IX',[7,8,9]],['Database','Modul X–XII',[10,11,12]],['Berorientasi Objek','Modul XIII',[13]]];
+function firstOpen(){for(const m of MODS){const s=modStat(m);if(s.d<s.t)return m;}return null;}
+function showHome(){
+  cur='home';
+  const s=allStat(), L=level(), fo=firstOpen(), started=s.d>0;
+  const msg=started?'Kamu sudah menyelesaikan '+s.d+' dari '+s.t+' latihan dan tugas. Levelmu sekarang: '+L.name+'.'
+    :'Latihan PHP dari dasar sampai OOP: 13 modul, soal bertingkat, dan tugas praktik. Setiap jawaban benar menumbuhkan apelmu.';
+  let h='<section class="panel"><div class="hero"><span aria-hidden="true">'+apel(s.d===s.t?'cheer':(started?'wow':'happy'),132)+'</span><div class="txt"><p class="eyebrow">Pemrograman Web I · PHP dan MySQL</p><h2>Halo, aku Apeli!</h2><p>'+esc(msg)+'</p><div class="cta">'
+    +(fo?'<a class="btn" href="#m'+fo.n+'">'+(started?'Lanjutkan':'Mulai')+' Modul '+fo.rom+'</a>':'')
+    +'<a class="btn ghost" href="#ujian">Ujian Akhir</a></div></div></div></section>';
+  h+='<section class="panel"><h2 class="sec">Kebun Apel <small>makin penuh, makin merah</small></h2><div class="garden">'
+    +MODS.map(m=>{const t=modStat(m);return '<a href="#m'+m.n+'" aria-label="Modul '+m.rom+', '+t.d+' dari '+t.t+' selesai">'+miniApple(t.d/t.t,'g'+m.n,44)+'<b>'+m.rom+'</b></a>';}).join('')+'</div></section>';
+  const nb=BG.filter(b=>S.badge[b[0]]).length;
+  h+='<section class="panel"><h2 class="sec">Lencana <small>'+nb+' dari '+BG.length+'</small></h2><div class="chips">'
+    +BG.map(b=>S.badge[b[0]]?'<span class="chip" title="'+esc(b[2])+'">'+esc(b[1])+'</span>':'<span class="tag" style="opacity:.65" title="'+esc(b[2])+'">'+esc(b[1])+' (terkunci)</span>').join('')+'</div></section>';
+  h+='<section class="panel"><h2 class="sec">Semua Modul</h2>';
+  PH.forEach(p=>{
+    h+='<h3 class="phase">'+esc(p[0])+'<small>'+esc(p[1])+'</small></h3><div class="cards">';
+    p[2].forEach(n=>{
+      const m=MODS[n-1], t=modStat(m), pc=Math.round(t.d/t.t*100), first=(/^[^.!?]*[.!?]/.exec(m.intro)||[m.intro])[0];
+      h+='<a class="mc'+(t.d===t.t?' full':'')+'" href="#m'+m.n+'"><div class="t"><h3>'+esc(m.title)+'</h3><span class="rm">Modul '+m.rom+'</span></div><p>'+esc(first)+'</p><div class="bar" role="img" aria-label="'+t.d+' dari '+t.t+' selesai"><i style="width:'+pc+'%"></i></div></a>';
+    });
+    h+='</div>';
+  });
+  h+='</section>';
+  document.getElementById('main').innerHTML=h;
+  updateProgress(true);
+}
+
+/* ---------- Ulangi modul ---------- */
+function resetModule(n,btn){
+  if(!btn.dataset.sure){btn.dataset.sure='1';btn.textContent='Yakin? Klik sekali lagi';setTimeout(()=>{if(btn.isConnected){delete btn.dataset.sure;btn.textContent='Ulangi modul ini';}},4000);return;}
+  const m=MODS[n-1];
+  for(let i=1;i<=m.qs.length;i++){const id='m'+n+'q'+i;delete S.ok[id];if(S.fill)delete S.fill[id];delete W[id];delete R[id];delete WF[id];}
+  delete S.ok['m'+n+'t'];save();streak=0;show(n);window.scrollTo(0,0);
+}
+
+/* ---------- Ujian Akhir ---------- */
+let EX=null, tmr=null;
+const pad=x=>(x<10?'0':'')+x, fmt=s=>pad(Math.floor(s/60))+':'+pad(s%60);
+function stopTimer(){if(tmr){clearInterval(tmr);tmr=null;}}
+function shuffle(a,seed){let x=seed||1;a=a.slice();for(let i=a.length-1;i>0;i--){x^=x<<13;x^=x>>>17;x^=x<<5;const j=Math.abs(x)%(i+1);const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function pickExam(){
+  const all=[], pick=[];
+  MODS.forEach(m=>m.qs.forEach((q,i)=>all.push({m:m.n,i:i+1})));
+  MODS.forEach(m=>{const r=Math.floor(Math.random()*m.qs.length);pick.push({m:m.n,i:r+1});});
+  const rest=all.filter(a=>!pick.some(p=>p.m===a.m&&p.i===a.i));
+  const sd=(Date.now()%100000)+7;
+  return shuffle(pick.concat(shuffle(rest,sd).slice(0,7)),sd+3);
+}
+function isAns(i){const a=EX.ans[i];return a!==undefined&&a!=='';}
+function exQ(i){const p=EX.items[i];return MODS[p.m-1].qs[p.i-1];}
+function exCorrect(i){
+  const q=exQ(i), a=EX.ans[i];
+  if(!isAns(i))return false;
+  return q.t==='mcq'?a===0:q.ans.some(x=>norm(x)===norm(a));
+}
+function showExam(){
+  cur='exam';
+  if(!EX)renderExamIntro();
+  else if(EX.done)renderExamResult();
+  else renderExamRun();
+  updateProgress(true);
+}
+function renderExamIntro(){
+  const e=S.exam;
+  let h='<section class="panel"><div class="hero"><span aria-hidden="true">'+apel('think',112)+'</span><div class="txt"><p class="eyebrow">Mode ujian</p><h2>Ujian Akhir</h2>'
+   +'<p>20 soal acak dari seluruh modul, 30 menit, tanpa kunci jawaban di tengah jalan. Kamu bisa pindah-pindah soal dan mengubah jawaban sebelum selesai. Nilai dan pembahasan baru muncul di akhir.</p>'
+   +(e.n?'<p>Skor terbaikmu: <b>'+e.best+'</b> (sudah '+e.n+'x mencoba).</p>':'')
+   +'<div class="cta"><button type="button" class="btn" data-act="xstart">Mulai ujian</button><a class="btn ghost" href="#beranda">Kembali ke beranda</a></div></div></div></section>';
+  document.getElementById('main').innerHTML=h;
+}
+function renderExamRun(){
+  const x=EX, i=x.cur, q=exQ(i), p=x.items[i], left=Math.max(0,x.end-Date.now());
+  const done=x.items.filter((_,k)=>isAns(k)).length;
+  let h='<section class="panel"><div class="xhead"><b>Soal '+(i+1)+' dari '+x.items.length+'</b><span class="timer" id="xt" aria-label="Sisa waktu">'+fmt(Math.ceil(left/1000))+'</span></div>';
+  h+='<div class="navg" role="group" aria-label="Pilih nomor soal">'+x.items.map((_,k)=>'<button type="button" data-act="xgo" data-i="'+k+'" class="'+(isAns(k)?'ans ':'')+(k===i?'cur':'')+'" aria-label="Soal '+(k+1)+(isAns(k)?', sudah dijawab':'')+'"'+(k===i?' aria-current="true"':'')+'>'+(k+1)+'</button>').join('')+'</div>';
+  h+='<div class="q" id="xq"><div class="qh"><span class="n">'+(i+1)+'</span><div style="min-width:0;flex:1"><span class="tag">'+TAG[q.k]+'</span><p class="qt">'+esc(q.q)+'</p>';
+  if(q.code&&q.t==='mcq')h+=codeBlock('',q.lang,q.code,false);
+  if(q.t==='mcq'){
+    const ord=order('x'+p.m+'q'+p.i,q.o.length);
+    h+='<ul class="opts">'+ord.map((oi,pos)=>'<li><button type="button" class="'+(x.ans[i]===oi?'sel':'')+'" data-act="xpick" data-o="'+oi+'" aria-pressed="'+(x.ans[i]===oi)+'"><span class="k">'+'ABCD'[pos]+'</span><span class="tx">'+esc(q.o[oi])+'</span></button></li>').join('')+'</ul>';
+  }else{
+    h+=codeBlock('',q.lang,q.code,false)+'<div class="fillrow"><input type="text" class="xfill" id="xin" aria-label="Jawaban soal '+(i+1)+'" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+esc(x.ans[i]||'')+'"></div>';
+  }
+  h+='</div></div></div>';
+  h+='<div class="xnav"><button type="button" class="btn ghost" data-act="xprev"'+(i===0?' disabled':'')+'>← Sebelumnya</button>'
+   +(i<x.items.length-1?'<button type="button" class="btn" data-act="xnext">Berikutnya →</button>':'<button type="button" class="btn" data-act="xfinish">Selesai ('+done+'/'+x.items.length+' terjawab)</button>')+'</div>';
+  if(i<x.items.length-1)h+='<p class="ans-line"><button type="button" class="btn ghost sm" data-act="xfinish">Selesai sekarang ('+done+'/'+x.items.length+' terjawab)</button></p>';
+  h+='</section>';
+  document.getElementById('main').innerHTML=h;
+  stopTimer();
+  tmr=setInterval(()=>{
+    const l=Math.max(0,x.end-Date.now()),el=document.getElementById('xt');
+    if(el)el.textContent=fmt(Math.ceil(l/1000));
+    if(l<=0){stopTimer();exFinish();}
+  },1000);
+}
+function exFinish(){
+  if(!EX||EX.done)return;
+  stopTimer();
+  const x=EX;let ok=0;x.items.forEach((_,k)=>{if(exCorrect(k))ok++;});
+  x.done=true;x.ok=ok;x.score=Math.round(ok/x.items.length*100);
+  S.exam.n=(S.exam.n||0)+1;if(x.score>S.exam.best)S.exam.best=x.score;save();
+  renderExamResult();updateProgress(true);window.scrollTo(0,0);
+  if(x.score>=80)confetti();
+}
+function renderExamResult(){
+  const x=EX, sc=x.score, mood=sc>=80?'cheer':(sc>=60?'wow':'oops');
+  const msg=sc>=80?'Mantap! Kamu sudah siap.':(sc>=60?'Lumayan. Ulangi bagian yang masih salah.':'Jangan menyerah. Baca ulang rangkuman modulnya, lalu coba lagi.');
+  const per={};x.items.forEach((p,k)=>{const o=per[p.m]=per[p.m]||{d:0,t:0};o.t++;if(exCorrect(k))o.d++;});
+  let h='<section class="panel"><div class="score"><span aria-hidden="true">'+apel(mood,112)+'</span><div><div class="big">'+sc+'<small>/100</small></div><p>'+x.ok+' benar dari '+x.items.length+' soal. '+esc(msg)+'</p></div></div>';
+  h+='<h3 class="phase">Per modul</h3><div class="brk">';
+  Object.keys(per).sort((a,b)=>a-b).forEach(n=>{const o=per[n],m=MODS[n-1],pc=Math.round(o.d/o.t*100);
+    h+='<a href="#m'+n+'"><span>Modul '+m.rom+'</span><div class="bar"><i class="'+(pc<50?'low':'')+'" style="width:'+pc+'%"></i></div><span>'+o.d+'/'+o.t+'</span></a>';});
+  h+='</div><div class="cta"><button type="button" class="btn" data-act="xretry">Ujian baru</button><a class="btn ghost" href="#beranda">Beranda</a></div></section>';
+  h+='<section class="panel"><h2 class="sec">Pembahasan</h2><div class="chips" role="group" aria-label="Filter">'
+    +'<button type="button" data-act="xfilter" data-f="all" aria-pressed="'+(x.f!=='bad')+'">Semua</button><button type="button" data-act="xfilter" data-f="bad" aria-pressed="'+(x.f==='bad')+'">Yang salah saja</button></div>';
+  x.items.forEach((p,k)=>{
+    const q=exQ(k), good=exCorrect(k), a=x.ans[k];
+    if(x.f==='bad'&&good)return;
+    const yours=!isAns(k)?'(tidak dijawab)':(q.t==='mcq'?q.o[a]:a);
+    const right=q.t==='mcq'?q.o[0]:q.ans[0];
+    h+='<div class="q'+(good?' ok':' bad')+'"><div class="qh"><span class="n">'+(k+1)+'</span><div style="min-width:0;flex:1"><span class="tag">Modul '+MODS[p.m-1].rom+' · '+TAG[q.k]+'</span><p class="qt">'+esc(q.q)+'</p>';
+    if(q.code)h+=codeBlock('',q.lang,q.code,false);
+    h+='<p class="ans-line"><b>'+(good?'Benar.':'Jawabanmu:')+'</b> '+(good?'':esc(yours)+'<br><b>Yang benar:</b> ')+esc(right)+'</p><p class="ans-line">'+esc(q.why)+'</p></div></div></div>';
+  });
+  h+='</section>';
+  document.getElementById('main').innerHTML=h;
+}
+function examClick(act,b){
+  if(act==='xstart'||act==='xretry'){EX={items:pickExam(),ans:{},cur:0,end:Date.now()+30*60*1000,done:false};showExam();window.scrollTo(0,0);return true;}
+  if(!/^x/.test(act))return false;
+  if(!EX)return true;
+  if(act==='xfilter'){EX.f=b.dataset.f;renderExamResult();return true;}
+  if(EX.done)return true;
+  const keepFill=()=>{const el=document.getElementById('xin');if(el)EX.ans[EX.cur]=el.value.trim();};
+  if(act==='xpick'){EX.ans[EX.cur]=+b.dataset.o;renderExamRun();}
+  else if(act==='xgo'){keepFill();EX.cur=+b.dataset.i;renderExamRun();}
+  else if(act==='xprev'){keepFill();EX.cur=Math.max(0,EX.cur-1);renderExamRun();}
+  else if(act==='xnext'){keepFill();EX.cur=Math.min(EX.items.length-1,EX.cur+1);renderExamRun();}
+  else if(act==='xfinish'){keepFill();if(!b.dataset.sure&&EX.items.some((_,k)=>!isAns(k))){b.dataset.sure='1';b.textContent='Masih ada yang kosong. Klik lagi untuk menyelesaikan';return true;}exFinish();}
+  return true;
+}
+main.addEventListener('input',e=>{if(e.target.matches('.xfill')&&EX&&!EX.done)EX.ans[EX.cur]=e.target.value.trim();});
+/* ---------- Neraka esolang ---------- */
+const GW=130, GH=12, CS=14, NSTEP=15;
+const ST=[
+ {lg:'Brainfuck',kind:'mcq',k:'pilihan',q:'Brainfuck (Urban Müller, 1993) terkenal sangat minimalis. Berapa banyak perintah yang dikenalnya?',o:['8 perintah','4 perintah','16 perintah','26 perintah'],why:'Delapan karakter: + - < > [ ] . , . Karakter lain diabaikan sebagai komentar.'},
+ {lg:'Brainfuck',kind:'mcq',k:'output',q:'Apa yang dicetak program Brainfuck ini? (kode ASCII: A = 65)',code:'++++++++[>++++++++<-]>+.',o:['A','@','B','65'],why:'Sel pertama diisi 8, lalu loop menambah 8 ke sel kedua sebanyak 8 kali: 64. Satu + lagi menjadi 65, dan titik mencetak karakter ASCII 65, yaitu A.'},
+ {lg:'Brainfuck',kind:'mcq',k:'pilihan',q:'Apa arti tanda kurung [ ... ] di Brainfuck?',o:['Ulangi isi kurung selama sel saat ini bukan nol','Komentar yang diabaikan','Mendefinisikan sebuah fungsi','Mengulang tepat 10 kali'],why:'Jika sel bernilai 0 saat bertemu [, program melompat ke ]. Pada ], bila sel masih bukan nol, program kembali ke [.'},
+ {lg:'Brainfuck',kind:'mcq',k:'output',q:'Apa yang dicetak program ini?',code:'++++++++[>++++++++<-]>+.+.',o:['AB','A','BA','AA'],why:'Setelah mencetak A (65), tanda + menaikkan sel menjadi 66 dan titik berikutnya mencetak B.'},
+ {lg:'Brainfuck',kind:'code'},
+ {lg:'Piet',kind:'mcq',k:'pilihan',q:'Piet dinamai dari pelukis Piet Mondrian. Seperti apa bentuk programnya?',o:['Sebuah gambar berisi blok-blok warna','Deretan angka biner','Sebuah file suara','Teks yang ditulis terbalik'],why:'Kode Piet adalah gambar. Program dibaca dengan berpindah antar blok warna, dan datanya disimpan di sebuah stack.'},
+ {lg:'Piet',kind:'mcq',k:'pilihan',q:'Di Piet, apa yang menentukan perintah yang dijalankan saat berpindah dari satu blok warna ke blok berikutnya?',o:['Perubahan rona (hue) dan kecerahan antara kedua blok','Jumlah huruf pada nama warna','Ukuran file gambar','Urutan nama file'],why:'Selisih rona dan selisih kecerahan antara dua blok memilih perintahnya, misalnya push, add, atau pop.'},
+ {lg:'Piet',kind:'mcq',k:'pilihan',q:'Apa fungsi blok berwarna hitam di Piet?',o:['Penghalang yang tidak boleh dimasuki pointer','Perintah mencetak','Perintah mengulang dari awal','Sama persis dengan blok putih'],why:'Bila pointer menabrak hitam atau tepi gambar, arahnya (DP dan CC) diganti. Setelah delapan kali gagal, program berhenti. Putih sebaliknya: dilewati bebas.'},
+ {lg:'Piet',kind:'mcq',k:'pilihan',q:'Saat perintah push dijalankan di Piet, angka apa yang dimasukkan ke stack?',o:['Jumlah kotak (codel) pada blok yang baru ditinggalkan','Nomor warna pada palet','Jumlah semua blok dalam gambar','Kode heksadesimal warnanya'],why:'Ukuran blok adalah angkanya. Untuk memasukkan 72, buat blok berisi 72 kotak.'},
+ {lg:'Piet',kind:'code'},
+ {lg:'Whitespace',kind:'mcq',k:'pilihan',q:'Whitespace (Edwin Brady dan Chris Morris, 2003) hanya memakai karakter apa untuk instruksinya?',o:['Spasi, tab, dan baris baru','Hanya titik dan koma','Hanya angka 0 dan 1','Hanya tanda kurung'],why:'Semua karakter lain diabaikan sebagai komentar, sehingga program terlihat seperti halaman kosong.'},
+ {lg:'Whitespace',kind:'mcq',k:'pilihan',q:'Awalan (IMP) Tab lalu baris baru dipakai untuk kelompok perintah apa?',o:['Input/output, misalnya mencetak karakter','Aritmetika','Aliran kendali (label dan loncat)','Manipulasi stack'],why:'Tab+Baris baru = I/O. Spasi = stack, Tab+Spasi = aritmetika, Tab+Tab = heap, Baris baru = aliran kendali. Mencetak karakter: Tab, Baris baru, Spasi, Spasi.'},
+ {lg:'Whitespace',kind:'mcq',k:'pilihan',q:'Bagaimana akhir sebuah program Whitespace ditandai?',o:['Tiga baris baru berturut-turut','Satu titik di ujung','Kata END','Berakhir otomatis tanpa perintah'],why:'Perintah akhir adalah Baris baru tiga kali. Tanpa itu, program dianggap salah.'},
+ {lg:'Whitespace',kind:'mcq',k:'pilihan',q:'Bagaimana sebuah angka (misalnya untuk push) ditulis di Whitespace?',o:['Biner: Spasi = 0, Tab = 1, diawali tanda dan ditutup baris baru','Desimal memakai angka 0 sampai 9','Heksadesimal','Angka Romawi'],why:'Bit pertama adalah tanda (Spasi = positif, Tab = negatif), lalu bit nilai, lalu baris baru menutup angka. Contoh 65: Spasi Spasi (push), Spasi (positif), TSSSSST, baris baru.'},
+ {lg:'Whitespace',kind:'code'}
+];
+const TAUNT=['Hehe, berani juga kamu masuk ke dapurku. Mulai dengan Brainfuck.','Otakmu mulai meleleh? Hitung dulu loopnya.','Kurung siku itu jebakan favoritku.','Satu lagi, lalu kamu harus menulis kode sendiri!','Tulis Hello World dengan delapan karakter. Silakan menangis.','Sekarang Piet. Mondrian pun menangis di sini.','Warna-warna ini bukan hiasan, lho.','Hitam itu dinding. Ingat, ya.','Jumlah kotak... bukan jumlah warna. Hehe.','Sekarang kamu harus MELUKIS programmu!','Terakhir: Whitespace. Halaman yang terlihat kosong.','Tab, spasi, baris baru. Itu saja senjatamu.','Tiga baris baru dan tamat. Ingat itu.','Biner dengan spasi dan tab. Seru, kan?','Tantangan terakhir! Hello World dari spasi dan tab saja!'];
+function banana(mood,size){
+  const eyes=mood==='hurt'
+    ?'<path d="M58 70l12 12M70 70 58 82M88 70l12 12M100 70 88 82" stroke="#3b1820" stroke-width="3.5" stroke-linecap="round"/>'
+    :mood==='laugh'
+    ?'<path d="M57 78q7-9 14 0M88 78q7-9 14 0" stroke="#3b1820" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
+    :'<ellipse cx="64" cy="76" rx="8" ry="9" fill="#fff"/><ellipse cx="96" cy="76" rx="8" ry="9" fill="#fff"/><circle cx="66" cy="78" r="4.5" fill="#d1180b"/><circle cx="94" cy="78" r="4.5" fill="#d1180b"/>';
+  const brow=mood==='hurt'?'<path d="M54 62l18-4M106 62 88 58" stroke="#3b1820" stroke-width="4" stroke-linecap="round"/>'
+    :'<path d="M52 58l22 10M108 58 86 68" stroke="#3b1820" stroke-width="5" stroke-linecap="round"/>';
+  const mouth=mood==='laugh'
+    ?'<path d="M60 96q20 28 40 0z" fill="#5a0d0d" stroke="#3b1820" stroke-width="3" stroke-linejoin="round"/><path d="M68 97l4 8 4-8M84 97l4 8 4-8" fill="#fff"/>'
+    :mood==='hurt'
+    ?'<path d="M64 106q16-12 32 0" stroke="#3b1820" stroke-width="3.5" fill="none" stroke-linecap="round"/>'
+    :'<path d="M58 96q22 20 44 0" fill="#5a0d0d" stroke="#3b1820" stroke-width="3" stroke-linejoin="round"/><path d="M66 100l4 8 4-6 6 8 6-8 4 6 4-8" fill="#fff"/>';
+  return '<svg class="ban" width="'+size+'" height="'+Math.round(size*1.28)+'" viewBox="0 0 170 218" role="img" aria-label="Mr. Pisang Iblis">'
+   +'<g stroke="#3b1820" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">'
+   +'<path d="M142 44V206" stroke="#7a4a1f" stroke-width="6"/>'
+   +'<path d="M122 40V16M142 46V8M162 40V16M122 40q20 16 40 0" fill="none" stroke="#e6e6e6" stroke-width="5"/>'
+   +'<path d="M122 16l-4 8h8zM142 8l-4 8h8zM162 16l-4 8h8z" fill="#e6e6e6" stroke-width="2"/>'
+   +'<path d="M50 168Q14 168 22 138" fill="none" stroke="#d1180b" stroke-width="4"/><path d="M14 142l8-14 8 14z" fill="#d1180b" stroke-width="2"/>'
+   +'<path d="M72 34C34 52 30 126 60 176 66 190 96 190 106 176 128 126 122 54 92 34 86 28 78 28 72 34Z" fill="#ffd84a"/>'
+   +'<path d="M84 40C66 78 70 140 88 182" fill="none" stroke="#e0a800" stroke-width="2.5"/>'
+   +'<rect x="74" y="12" width="14" height="22" rx="3" fill="#7a4a1f"/>'
+   +'<path d="M64 38 50 10 80 30zM98 30 120 10 106 42z" fill="#d1180b"/>'
+   +'<path d="M112 110Q128 106 140 112" fill="none" stroke-width="5"/><circle cx="141" cy="112" r="7" fill="#ffd84a"/>'
+   +'<path d="M70 188v14M96 188v14" fill="none"/><path d="M62 204h16M88 204h16" stroke-width="5" fill="none"/>'
+   +'</g>'+eyes+brow+mouth+'</svg>';
+}
+let HL=null;
+function newHL(){return{i:0,ok:0,pick:null,done:false,bf:'',ws:'',gx:new Uint8Array(GW*GH).fill(255),tool:'rect',color:6,out:'',err:'',solved:false,gave:false,ran:false,f:'all'};}
+const PNAME=['merah','kuning','hijau','cyan','biru','magenta'], LNAME=['terang','normal','gelap'];
+function judge(out,lang){
+  const o=out.replace(/\r?\n$/,'');
+  if(lang==='Piet')return o.indexOf('Hello, World!')===0||o.indexOf('Hello World!')===0;
+  return o==='Hello, World!'||o==='Hello World!';
+}
+function wsHtml(s){
+  return (s.replace(/[^STL]/g,'').split('').map(c=>c==='S'?'<span class="s" aria-hidden="true">·</span>':c==='T'?'<span class="t" aria-hidden="true">→</span>':'<span class="l" aria-hidden="true">↵</span><br>').join('')||'<span class="ph">Program masih kosong. Tekan tombol di bawah.</span>');
+}
+function wsRefresh(){const v=document.getElementById('wsview'),c=document.getElementById('wscount');if(v){v.innerHTML=wsHtml(HL.ws);v.scrollTop=v.scrollHeight;}if(c)c.textContent=HL.ws.length+' simbol';}
+function drawPiet(drag){
+  const cv=document.getElementById('piet');if(!cv)return;
+  const g=cv.getContext('2d');
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const v=HL.gx[y*GW+x];g.fillStyle=ESO.pcolor(v===255?18:v);g.fillRect(x*CS,y*CS,CS,CS);}
+  g.strokeStyle='rgba(120,120,120,.35)';g.lineWidth=1;g.beginPath();
+  for(let x=0;x<=GW;x++){g.moveTo(x*CS+.5,0);g.lineTo(x*CS+.5,GH*CS);}
+  for(let y=0;y<=GH;y++){g.moveTo(0,y*CS+.5);g.lineTo(GW*CS,y*CS+.5);}
+  g.stroke();
+  if(drag){const x0=Math.min(drag.x0,drag.x1),x1=Math.max(drag.x0,drag.x1),y0=Math.min(drag.y0,drag.y1),y1=Math.max(drag.y0,drag.y1);g.strokeStyle='#ff3b1f';g.lineWidth=3;g.strokeRect(x0*CS+1.5,y0*CS+1.5,(x1-x0+1)*CS-3,(y1-y0+1)*CS-3);}
+}
+function setupPiet(){
+  const cv=document.getElementById('piet');if(!cv)return;
+  cv.width=GW*CS;cv.height=GH*CS;drawPiet();
+  const cell=e=>{const r=cv.getBoundingClientRect();return[Math.max(0,Math.min(GW-1,Math.floor((e.clientX-r.left)/CS))),Math.max(0,Math.min(GH-1,Math.floor((e.clientY-r.top)/CS)))];};
+  let drag=null;
+  cv.addEventListener('pointerdown',e=>{
+    if(HL.tool==='pan')return;
+    e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(x){}
+    const[x,y]=cell(e);drag={x0:x,y0:y,x1:x,y1:y};
+    if(HL.tool==='brush'){HL.gx[y*GW+x]=HL.color;}
+    drawPiet(HL.tool==='rect'?drag:null);
+  });
+  cv.addEventListener('pointermove',e=>{
+    if(!drag)return;const[x,y]=cell(e);drag.x1=x;drag.y1=y;
+    if(HL.tool==='brush')HL.gx[y*GW+x]=HL.color;
+    drawPiet(HL.tool==='rect'?drag:null);
+  });
+  const end=()=>{
+    if(!drag)return;
+    if(HL.tool==='rect'){for(let y=Math.min(drag.y0,drag.y1);y<=Math.max(drag.y0,drag.y1);y++)for(let x=Math.min(drag.x0,drag.x1);x<=Math.max(drag.x0,drag.x1);x++)HL.gx[y*GW+x]=HL.color;}
+    drag=null;drawPiet();
+  };
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+}
+function setPietKey(){
+  const g=ESO.pietGen('Hello, World!');HL.gx.fill(255);
+  for(const k in g.cells){const y=Math.floor(k/400),x=k%400;if(x<GW&&y<GH)HL.gx[y*GW+x]=g.cells[k];}
+}
+function codeBody(lg){
+  const h=HL;
+  if(lg==='Brainfuck'){
+    return '<p class="ans-line">Tulis program Brainfuck yang mencetak <b>Hello, World!</b> (versi tanpa koma juga diterima). Ingat: kamu perlu kode ASCII tiap huruf. H = 72, e = 101, l = 108, o = 111.</p>'
+     +'<details><summary>Contekan perintah</summary><div class="in"><p class="hintbox"><b>+</b> tambah sel · <b>-</b> kurangi sel · <b>&gt;</b> pindah ke sel kanan · <b>&lt;</b> pindah ke kiri · <b>[</b> <b>]</b> ulangi selama sel bukan nol · <b>.</b> cetak karakter · <b>,</b> baca input.</p></div></details>'
+     +'<textarea id="bfsrc" class="bfsrc" rows="7" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Kode Brainfuck">'+esc(h.bf)+'</textarea>';
+  }
+  if(lg==='Whitespace'){
+    return '<p class="ans-line">Tulis program Whitespace yang mencetak <b>Hello, World!</b>. Di layar: <b>·</b> = Spasi (S), <b>→</b> = Tab (T), <b>↵</b> = Baris baru (L). Tombol pintas membantu menulis angka dan perintah cetak.</p>'
+     +'<details><summary>Contekan perintah</summary><div class="in"><p class="hintbox">Push angka: <b>S S</b> + tanda (<b>S</b> = +, <b>T</b> = −) + bit (<b>S</b> = 0, <b>T</b> = 1) + <b>L</b>. Cetak karakter: <b>T L S S</b>. Akhir program: <b>L L L</b>. Contoh push 65: S S S T S S S S S T L.</p></div></details>'
+     +'<div id="wsview" class="wsview" role="img" aria-label="Isi program Whitespace">'+wsHtml(h.ws)+'</div>'
+     +'<div class="toolrow"><button type="button" class="btn ghost sm" data-act="wsadd" data-s="S">Spasi (S)</button><button type="button" class="btn ghost sm" data-act="wsadd" data-s="T">Tab (T)</button><button type="button" class="btn ghost sm" data-act="wsadd" data-s="L">Baris baru (L)</button><button type="button" class="btn ghost sm" data-act="wsdel">Hapus terakhir</button><button type="button" class="btn ghost sm" data-act="wsclr">Kosongkan</button><span class="timer" id="wscount">'+h.ws.length+' simbol</span></div>'
+     +'<div class="toolrow"><label>Angka <input type="number" id="wsnum" class="wsnum" min="0" max="255" value="72" aria-label="Angka untuk push"></label><button type="button" class="btn sm" data-act="wspush">Push angka</button><button type="button" class="btn sm" data-act="wsout">Cetak karakter</button><button type="button" class="btn sm" data-act="wsend">Akhir (L L L)</button></div>';
+  }
+  const sw=[];for(let l=0;l<3;l++)for(let k=0;k<6;k++){const v=l*6+k;sw.push('<button type="button" class="sw" data-act="pcolor" data-c="'+v+'" aria-pressed="'+(h.color===v)+'" aria-label="'+PNAME[k]+' '+LNAME[l]+'" style="background:'+ESO.pcolor(v)+'"></button>');}
+  sw.push('<button type="button" class="sw" data-act="pcolor" data-c="18" aria-pressed="'+(h.color===18)+'" aria-label="putih (juga penghapus)" style="background:#fff"></button>');
+  sw.push('<button type="button" class="sw" data-act="pcolor" data-c="19" aria-pressed="'+(h.color===19)+'" aria-label="hitam" style="background:#000"></button>');
+  const tl=(t,n)=>'<button type="button" class="btn ghost sm" data-act="ptool" data-t="'+t+'" aria-pressed="'+(h.tool===t)+'">'+n+'</button>';
+  return '<p class="ans-line">Lukis program Piet yang mencetak <b>Hello, World!</b>. Pointer mulai dari kotak kiri atas dan bergerak ke kanan. Gambarmu berukuran '+GW+' x '+GH+' kotak: geser ke samping bila perlu.</p>'
+   +'<details><summary>Contekan perintah</summary><div class="in"><p class="hintbox"><b>push</b>: rona sama, kecerahan +1 (terang, normal, gelap, lalu kembali terang). Angkanya adalah <b>jumlah kotak</b> di blok yang ditinggalkan. <b>out(char)</b>: rona +5, kecerahan +2. Urutan rona: merah, kuning, hijau, cyan, biru, magenta. Contoh per huruf: blok 72 kotak (H), blok 1 kotak satu tingkat lebih gelap di kanannya (push 72), lalu blok berikutnya dengan rona +5 dan kecerahan +2 (cetak). Di ujung, kurung dengan hitam agar program berhenti.</p></div></details>'
+   +'<div class="toolrow" role="group" aria-label="Alat">'+tl('rect','Persegi')+tl('brush','Kuas')+tl('pan','Gulir')+'<button type="button" class="btn ghost sm" data-act="pclear">Bersihkan</button></div>'
+   +'<div class="toolrow" role="group" aria-label="Palet warna">'+sw.join('')+'</div>'
+   +'<div class="pietwrap"><canvas id="piet" class="piet" style="touch-action:'+(h.tool==='pan'?'auto':'none')+'" aria-label="Kanvas program Piet"></canvas></div>';
+}
+function showHell(){
+  cur='hell';
+  if(!HL)HL=newHL();
+  const f=document.getElementById('fx');
+  if(!f.querySelector('.em')){let e='';for(let n=0;n<18;n++)e+='<i class="em" style="left:'+Math.round(Math.random()*98)+'%;animation-delay:'+(Math.random()*3).toFixed(2)+'s"></i>';f.innerHTML=e;}
+  const h=HL;let out='';
+  if(h.done){
+    const win=h.ok===NSTEP, mood=win?'hurt':(h.ok>=10?'evil':'laugh');
+    const msg=win?'AARGH! Lima belas dari lima belas! Kamu menaklukkan nerakaku. Ambil lencanamu dan pergilah.':(h.ok>=10?'Hmph. Kamu lolos kali ini, tapi tidak sempurna. Berani coba lagi?':'MUAHAHAHA! Neraka esolang terlalu panas buatmu. Coba lagi kalau berani!');
+    out='<section class="panel hellbox"><div class="hero"><span>'+banana(mood,150)+'</span><div class="txt"><p class="eyebrow">Hasil Neraka Esolang</p><h2>'+h.ok+' dari '+NSTEP+'</h2><div class="bubble">'+esc(msg)+'</div><div class="cta"><button type="button" class="btn" data-act="hretry">Coba lagi</button><a class="btn ghost" href="#beranda">Kabur ke beranda</a></div></div></div></section>';
+  }else{
+    const s=ST[h.i], loc=h.i%5, eb=s.lg+' · soal '+(loc+1)+' dari 5 · langkah '+(h.i+1)+'/'+NSTEP;
+    if(s.kind==='mcq'){
+      const ord=order('hell'+h.i,s.o.length), ans=h.pick!==null, good=ans&&h.pick===0;
+      const mood=!ans?'evil':(good?'hurt':'laugh');
+      const say=!ans?TAUNT[h.i]:(good?'Grr... benar. Beruntung kamu.':'MUAHAHA! Salah! Pitchforkku lapar.');
+      out='<section class="panel hellbox"><div class="hero"><span>'+banana(mood,132)+'</span><div class="txt"><p class="eyebrow">'+esc(eb)+'</p><h2>Mr. Pisang Iblis</h2><div class="bubble" role="status">'+esc(say)+'</div></div></div></section>';
+      out+='<section class="panel"><div class="q" id="hq" tabindex="-1"><div class="qh"><span class="n">'+(loc+1)+'</span><div style="min-width:0;flex:1"><span class="tag">'+TAG[s.k]+'</span><p class="qt">'+esc(s.q)+'</p>'+(s.code?codeBlock('','bf',s.code,false):'')+'<ul class="opts">'
+        +ord.map((oi,pos)=>{let c='';if(ans){if(oi===0)c='right';else if(oi===h.pick)c='wrong';}return '<li><button type="button" class="'+c+'" data-act="hpick" data-o="'+oi+'"'+(ans?' disabled':'')+'><span class="k">'+'ABCD'[pos]+'</span><span class="tx">'+esc(s.o[oi])+'</span></button></li>';}).join('')+'</ul>'
+        +(ans?fbHtml(good?'good':'bad','<b>'+(good?'Tepat.':'Salah.')+'</b> Jawabannya: '+esc(s.o[0])+'. '+esc(s.why),good?'wow':'oops','<div class="acts"><button type="button" class="btn" data-act="hnext">Lanjut</button></div>'):'')
+        +'</div></div></div></section>';
+    }else{
+      const mood=h.solved?'hurt':(h.gave?'laugh':'evil');
+      const say=h.solved?(h.gave?'Hmph. Kunci itu bukan jawabanmu sendiri.':'GRR! Hello World-mu jalan. Menyebalkan.'):(h.gave?'Menyerah, ya? Hehe.':TAUNT[h.i]);
+      out='<section class="panel hellbox"><div class="hero"><span>'+banana(mood,132)+'</span><div class="txt"><p class="eyebrow">'+esc(eb)+'</p><h2>Tantangan: Hello, World!</h2><div class="bubble" role="status">'+esc(say)+'</div></div></div></section>';
+      out+='<section class="panel"><div class="q" id="hq" tabindex="-1"><div class="qh"><span class="n">'+(loc+1)+'</span><div style="min-width:0;flex:1"><span class="tag">Tulis kode</span>'+codeBody(s.lg)
+        +'<div class="toolrow"><button type="button" class="btn" data-act="hrun">Jalankan</button><button type="button" class="btn ghost sm" data-act="hkey">Lihat kunci (tanpa poin)</button></div>'
+        +'<pre class="hout" id="hout" aria-live="polite">'+esc(h.ran?((h.err?'[Galat] '+h.err+'\n':'')+(h.out.length>300?h.out.slice(0,300)+'...':h.out)):'(keluaran program tampil di sini)')+'</pre>'
+        +(h.solved?fbHtml('good','<b>Berhasil.</b> Programmu mencetak Hello, World!'+(h.gave?' Karena kamu memakai kunci, soal ini tidak dihitung.':''),'cheer'):'')
+        +((h.solved||h.gave)?'<div class="acts"><button type="button" class="btn" data-act="hnext">'+(h.i===NSTEP-1?'Lihat nasibmu':'Lanjut')+'</button></div>':'')
+        +'</div></div></div></section>';
+    }
+  }
+  document.getElementById('main').innerHTML=out;
+  if(!h.done&&ST[h.i].lg==='Piet'&&ST[h.i].kind==='code')setupPiet();
+  updateProgress(true);
+}
+function hellRun(){
+  const h=HL,lg=ST[h.i].lg;let r;
+  if(lg==='Brainfuck'){const t=document.getElementById('bfsrc');if(t)h.bf=t.value;r=ESO.bfRun(h.bf);}
+  else if(lg==='Whitespace')r=ESO.wsRun(h.ws);
+  else r=ESO.pietRun(Array.from(h.gx),GW,GH);
+  h.out=r.out;h.err=r.err||'';h.ran=true;
+  const ok=judge(r.out,lg)&&(lg==='Piet'||!r.err);
+  if(ok&&!h.solved){h.solved=true;showHell();window.scrollTo({top:0});}
+  else{const o=document.getElementById('hout');if(o)o.textContent=(h.err?'[Galat] '+h.err+'\n':'')+(h.out.length>300?h.out.slice(0,300)+'...':h.out||'(tidak ada keluaran)');}
+}
+function hellClick(act,b){
+  if(!/^(h(pick|next|retry|run|key)|ws(add|del|clr|push|out|end)|p(tool|color|clear))$/.test(act))return false;
+  if(act==='hretry'){HL=newHL();showHell();window.scrollTo(0,0);return true;}
+  if(!HL)return true;
+  const h=HL;
+  if(act==='hpick'&&h.pick===null){
+    h.pick=+b.dataset.o;if(h.pick===0)h.ok++;
+    showHell();
+    const el=document.getElementById('hq');if(el){try{el.focus({preventScroll:true});}catch(e){}}
+  }else if(act==='hnext'){
+    const s=ST[h.i];
+    if(s.kind==='mcq'&&h.pick===null)return true;
+    if(s.kind==='code'){if(!(h.solved||h.gave))return true;if(h.solved&&!h.gave)h.ok++;}
+    h.i++;h.pick=null;h.out='';h.err='';h.ran=false;h.solved=false;h.gave=false;
+    if(h.i>=NSTEP){h.done=true;S.hell=Math.max(S.hell||0,h.ok);save();if(h.ok===NSTEP)confetti();}
+    showHell();window.scrollTo(0,0);
+  }
+  else if(act==='hrun')hellRun();
+  else if(act==='hkey'){
+    const lg=ST[h.i].lg;h.gave=true;
+    if(lg==='Brainfuck'){h.bf='++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.';}
+    else if(lg==='Whitespace')h.ws=ESO.wsGen('Hello, World!');
+    else setPietKey();
+    h.ran=false;showHell();
+  }
+  else if(act==='wsadd'){h.ws+=b.dataset.s;wsRefresh();}
+  else if(act==='wsdel'){h.ws=h.ws.slice(0,-1);wsRefresh();}
+  else if(act==='wsclr'){h.ws='';wsRefresh();}
+  else if(act==='wspush'){const n=Math.max(0,Math.min(255,parseInt((document.getElementById('wsnum')||{}).value,10)||0));h.ws+='SS'+ESO.wsNum(n);wsRefresh();}
+  else if(act==='wsout'){h.ws+='TLSS';wsRefresh();}
+  else if(act==='wsend'){h.ws+='LLL';wsRefresh();}
+  else if(act==='pcolor'){h.color=+b.dataset.c;document.querySelectorAll('.sw').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.c===h.color)));}
+  else if(act==='ptool'){h.tool=b.dataset.t;document.querySelectorAll('[data-act="ptool"]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.t===h.tool)));const cv=document.getElementById('piet');if(cv)cv.style.touchAction=h.tool==='pan'?'auto':'none';}
+  else if(act==='pclear'){h.gx.fill(255);drawPiet();}
+  return true;
+}
+main.addEventListener('input',e=>{if(e.target.id==='bfsrc'&&HL)HL.bf=e.target.value;});
+(function(){
+  const lg=document.getElementById('logo'), ev=document.getElementById('evil'), wrap=lg.parentNode;
+  let n=0, back_t=null, nt=null;
+  function back(){wrap.classList.remove('open');ev.setAttribute('aria-hidden','true');ev.tabIndex=-1;n=0;clearTimeout(back_t);}
+  function hit(){
+    if(wrap.classList.contains('open'))return;
+    n++;clearTimeout(nt);nt=setTimeout(()=>{n=0;},3000);
+    lg.classList.remove('shake');void lg.offsetWidth;lg.classList.add('shake');
+    if(n>=3){wrap.classList.add('open');ev.removeAttribute('aria-hidden');ev.tabIndex=0;toast('<b>Apeli kabur!</b><br>Ada sesuatu di belakangnya...','wow');back_t=setTimeout(back,8000);}
+    else toast('Aduh! Tinggal '+(3-n)+' klik lagi...','oops');
+  }
+  lg.addEventListener('click',hit);
+  lg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hit();}});
+  ev.addEventListener('click',()=>{back();HL=null;if(location.hash==='#neraka')route(false);else location.hash='#neraka';});
+})();
+/* ---------- Simpan ke akun (cloud) ---------- */
+(function(){
+  const el=document.getElementById('sync');
+  const say=t=>{if(el)el.textContent=t;};
+  let ref=null, timer=null;
+  const fin=o=>{o=o||{};o.ok=o.ok||{};o.badge=o.badge||{};o.exam=o.exam||{best:0,n:0};return o;};
+  cloudPush=()=>{
+    if(!ref)return;
+    clearTimeout(timer);
+    timer=setTimeout(()=>{
+      say('Menyimpan ke akunmu...');
+      ref.set({json:JSON.stringify(S),t:S.t||Date.now()}).then(()=>say('Progres tersimpan di akunmu dan di browser ini.'),()=>say('Gagal menyimpan ke akun. Progres tetap ada di browser ini.'));
+    },700);
+  };
+  (async()=>{
+    try{
+      if(!window.claude||!claude.use)return;
+      const [db,user]=await Promise.all([claude.use('db'),claude.use('user')]);
+      if(!db||!user||!user.id){return;}
+      const id=await user.id(); if(!id)return;
+      ref=db.collection('data/users/'+id).doc('progress');
+      const snap=await Promise.race([ref.get(),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),10000))]);
+      const d=snap.exists?snap.data():null;
+      let remote=null;
+      if(d&&d.json){try{remote=fin(JSON.parse(d.json));remote.t=d.t||0;}catch(e){}}
+      if(remote&&(remote.t||0)>(S.t||0)){
+        S=remote;
+        try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+        say('Progres dimuat dari akunmu.');
+        if(cur!=='exam'||!EX||EX.done)route(true);
+      }else if(Object.keys(S.ok).length||S.exam.n){
+        cloudPush();
+      }else{say('Progres tersimpan di akunmu dan di browser ini.');}
+    }catch(e){say('Progres tersimpan di browser ini saja.');}
+  })();
+})();
+document.getElementById('logo').innerHTML=apel('happy',60);
+window.addEventListener('hashchange',()=>route(false));
+route(true);booted=true;
+})();
+</script>
+
+</body></html>
