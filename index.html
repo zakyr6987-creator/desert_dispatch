@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Browser Games &amp; Practice Pages</title>
+<meta name="description" content="Four single-file browser projects: three games and one PHP practice page.">
+<style>
+:root{--bg:#f4f1ea;--ink:#1d1b16;--mut:#6b655a;--line:#d9d3c4;--card:#fffdf8;--accent:#9a3d1f;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#16140f;--ink:#efe9da;--mut:#a39c8b;--line:#3a352a;--card:#1f1c15;--accent:#e08a5f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding:40px 16px 64px}
+h1{font-size:1.6rem;margin:0 0 4px}
+p.lead{color:var(--mut);margin:0 0 28px}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+a.card{display:block;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:10px;color:inherit;text-decoration:none}
+a.card:hover,a.card:focus-visible{border-color:var(--accent);outline:none}
+a.card b{display:block;font-size:1.05rem}
+a.card span{color:var(--mut);font-size:.92rem}
+footer{margin-top:32px;color:var(--mut);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Browser Games &amp; Practice Pages</h1>
+<p class="lead">Each project is a single HTML file. Open one to play or study.</p>
+<ul>
+<li><a class="card" href="desert-dispatch.html"><b>Desert Dispatch</b><span>3D driving game. Cross the North African desert and deliver a sealed dispatch before 18:00.</span></a></li>
+<li><a class="card" href="iron-tide.html"><b>Iron Tide</b><span>Open-sea naval command with fog of war, air raids and armadas.</span></a></li>
+<li><a class="card" href="normandy-landing.html"><b>Overlord Beachhead</b><span>Tank game set in the Normandy landings, Allies vs Axis.</span></a></li>
+<li><a class="card" href="latihan-php-apeli.html"><b>Latihan PHP Bersama Apeli</b><span>Latihan HTML dan PHP interaktif (Bahasa Indonesia).</span></a></li>
+</ul>
+<footer>Games work best in landscape on a phone, or with keyboard and mouse on desktop.</footer>
+</main>
+</body>
+</html>
